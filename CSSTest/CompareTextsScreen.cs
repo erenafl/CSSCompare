@@ -35,21 +35,21 @@ namespace CSSTest
 
         private void CompareCSSTextstextBox1_TextChanged(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(CompareCSSTextstextBox2.Text.Trim()))
+            if ((!String.IsNullOrEmpty(CompareCSSTextstextBox2.Text.Trim())) && (!String.IsNullOrEmpty(CompareCSSTextstextBox1.Text.Trim())))
             {
                 compareCSSTexts.Enabled = true;
-                
             }
+            else compareCSSTexts.Enabled = false;
 
         }
 
         private void CompareCSSTextstextBox2_TextChanged(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(CompareCSSTextstextBox1.Text.Trim()))
+            if ((!String.IsNullOrEmpty(CompareCSSTextstextBox2.Text.Trim())) && (!String.IsNullOrEmpty(CompareCSSTextstextBox1.Text.Trim())))
             {
                 compareCSSTexts.Enabled = true;
-                
             }
+            else compareCSSTexts.Enabled = false;
         }
 
     }

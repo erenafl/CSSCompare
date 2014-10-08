@@ -32,8 +32,6 @@ namespace CSSTest
                 css = new CSSDocument();
                 string raw_text = parser.getTextfromFile(ofd.FileName);
                 css = parser.ParseText(raw_text);
-                //parsedCSSTextBox.Text = css.generateXML();
-                //css.writetoXML("C:\\output.txt");
                 fillTree(parsedCSSTreeView);
             }
             saveAsToolStripMenuItem.Enabled = true;
@@ -48,9 +46,7 @@ namespace CSSTest
                 var parser = new Parser();
                 css = new CSSDocument();
                 css = parser.ParseText(ti.RawText);
-                //parsedCSSTextBox.Text = css.generateXML();
                 fillTree(parsedCSSTreeView);
-                //css.writetoXML("C:\\output.txt");
             }
             saveAsToolStripMenuItem.Enabled = true;
         }
@@ -65,7 +61,6 @@ namespace CSSTest
 
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                //css.writetoXML(saveFileDialog1.FileName);
                 System.IO.File.WriteAllText(saveFileDialog1.FileName, css.generateXML());
             }
         }

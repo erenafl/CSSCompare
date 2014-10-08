@@ -34,7 +34,6 @@ namespace CSSTest
                 var raw_text = parser.getTextfromFile(ofd.FileName);
                 css1 = parser.ParseText(raw_text);
             }
-            //saveAsToolStripMenuItem.Enabled = true;
         }
 
         private void chooseCSSFiles_2_Click(object sender, EventArgs e)
@@ -50,7 +49,6 @@ namespace CSSTest
                 var raw_text = parser.getTextfromFile(ofd.FileName);
                 css2 = parser.ParseText(raw_text);
             }
-            //saveAsToolStripMenuItem.Enabled = true;
         }
 
         private void compareCSSFiles_Click(object sender, EventArgs e) 
