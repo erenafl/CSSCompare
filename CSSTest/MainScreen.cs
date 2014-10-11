@@ -66,13 +66,13 @@ namespace CSSTest
         }
         private void fillTree(TreeView tv)
         {
-            foreach (Selector s in css.selectors) 
+            foreach (Ruleset rule in css.rulesets) 
             {
-                TreeNode parent = new TreeNode(s.tag);
-                foreach (Property p in s.properties) 
+                TreeNode parent = new TreeNode(rule.selector.value);
+                foreach (Decleration dec in rule.declerations) 
                 {
-                    TreeNode child = new TreeNode(p.tag);
-                    child.Nodes.Add(new TreeNode(p.value));
+                    TreeNode child = new TreeNode(dec.property.value);
+                    child.Nodes.Add(new TreeNode(dec.value.value));
                     parent.Nodes.Add(child);
                 }
                 tv.Nodes.Add(parent);

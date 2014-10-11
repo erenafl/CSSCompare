@@ -11,28 +11,42 @@ namespace CSSParser
 {
     public class CSSDocument
     {
-        public List<Selector> selectors;
+        //public List<Selector> selectors { get; private set; }
+        public List<Ruleset> rulesets { get; private set; }
+        public List<AtRule> atrules { get; private set; }
         public CSSDocument()
         {
-            selectors = new List<Selector>();
+            //selectors = new List<Selector>();
+            rulesets = new List<Ruleset>();
+            atrules = new List<AtRule>();
         }
-        public void addSelector(Selector s)
+        /*
+        public void AddSelector(Selector s)
         {
             selectors.Add(s);
+        }
+         */
+        public void AddRuleset(Ruleset rule)
+        {
+            rulesets.Add(rule);
+        }
+        public void AddAtRule(AtRule atrule)
+        {
+            atrules.Add(atrule);
         }
         public void writetoXML(string filename)
         {
             var sr = new StreamWriter(filename, false, System.Text.Encoding.UTF8);
-            foreach (Selector s in selectors)
+            foreach (Ruleset rule in rulesets)
             {
-                sr.WriteLine("<" + s.getTag() + ">");
-                foreach (Property p in s.properties)
+                sr.WriteLine("<" + rule.selector.value + ">");
+                foreach (Decleration dec in rule.declerations)
                 {
-                    sr.WriteLine("     <" + p.getTag() + ">");
-                    sr.WriteLine("          " + p.getValue());
-                    sr.WriteLine("     </" + p.getTag() + ">");
+                    sr.WriteLine("     <" + dec.property.value + ">");
+                    sr.WriteLine("          " + dec.value.value);
+                    sr.WriteLine("     </" + dec.property.value + ">");
                 }
-                sr.WriteLine("</" + s.tag + ">");
+                sr.WriteLine("</" + rule.selector.value + ">");
 
             }
             sr.Close();
@@ -41,16 +55,16 @@ namespace CSSParser
         public string generateXML()
         {
             string XMLtext=null;
-            foreach (Selector s in selectors)
+            foreach (Ruleset rule in rulesets)
             {
-                XMLtext += "<" + s.getTag() + ">\n";
-                foreach (Property p in s.properties)
+                XMLtext += "<" + rule.selector.value + ">\n";
+                foreach (Decleration dec in rule.declerations)
                 {
-                    XMLtext += "     <" + p.getTag() + ">\n";
-                    XMLtext += "          " + p.getValue() + "\n";
-                    XMLtext += "     </" + p.getTag() + ">\n";
+                    XMLtext += "     <" + dec.property.value + ">\n";
+                    XMLtext += "          " + dec.value.value + "\n";
+                    XMLtext += "     </" + dec.property.value + ">\n";
                 }
-                XMLtext += "</" + s.tag + ">\n";
+                XMLtext += "</" + rule.selector.value + ">\n";
 
             }
             return XMLtext;

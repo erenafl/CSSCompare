@@ -7,7 +7,7 @@
     <ProjectGuid>{56026716-BC7C-4617-A479-0ED9EDD8C704}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CSSTest</RootNamespace>
+    <RootNamespace>CSSParser</RootNamespace>
     <AssemblyName>CSSTest</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -93,6 +93,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ResultScreen.resx">
       <DependentUpon>ResultScreen.cs</DependentUpon>

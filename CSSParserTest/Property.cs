@@ -8,10 +8,13 @@ namespace CSSParser
 {
     public class Property
     {
-        public string value;
-        public string tag;
-        public Property()
-        { }
+        public string value { get; set; }
+        //public string tag;
+        public Property(string val)
+        {
+            value = val;
+        }
+        /*
         public string getValue()
         {
             return value;
@@ -28,5 +31,6 @@ namespace CSSParser
         {
             tag = _tag;
         }
+         */
     }
 }

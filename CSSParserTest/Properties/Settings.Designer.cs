@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CSSTest.Properties {
+namespace CSSParser.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
