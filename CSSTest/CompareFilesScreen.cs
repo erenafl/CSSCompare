@@ -16,9 +16,15 @@ namespace CSSTest
         private ResultScreen rs;
         private CSSDocument css1;
         private CSSDocument css2;
+        private string filename1;
+        private string filename2;
+        private Parser parser;
         public CompareFilesScreen()
         {
             InitializeComponent();
+            css1 = new CSSDocument();
+            css2 = new CSSDocument();
+            parser = new Parser();
         }
 
         private void chooseCSSFiles_1_Click(object sender, EventArgs e)
@@ -29,10 +35,7 @@ namespace CSSTest
             {
                 if (!String.IsNullOrEmpty(ChooseCSSFilestextBox2.Text.Trim())) compareCSSFiles.Enabled = true;
                 ChooseCSSFilestextBox1.Text = ofd.FileName;
-                var parser = new Parser();
-                css1 = new CSSDocument();
-                var raw_text = parser.getTextfromFile(ofd.FileName);
-                css1 = parser.ParseText(raw_text);
+                filename1 = ofd.FileName;
             }
         }
 
@@ -44,15 +47,18 @@ namespace CSSTest
             {
                 if (!String.IsNullOrEmpty(ChooseCSSFilestextBox1.Text.Trim())) compareCSSFiles.Enabled = true;
                 ChooseCSSFilestextBox2.Text = ofd.FileName;
-                var parser = new Parser();
-                css2 = new CSSDocument();
-                var raw_text = parser.getTextfromFile(ofd.FileName);
-                css2 = parser.ParseText(raw_text);
+                filename2 = ofd.FileName;
             }
         }
 
         private void compareCSSFiles_Click(object sender, EventArgs e) 
         {
+            var raw_text1 = parser.getTextfromFile(filename1);
+            css1 = parser.ParseText(raw_text1);
+
+            var raw_text2 = parser.getTextfromFile(filename2);
+            css2 = parser.ParseText(raw_text2);
+
             rs = new ResultScreen(css1, css2);
             rs.Show();
         }

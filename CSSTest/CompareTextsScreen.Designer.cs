@@ -38,6 +38,7 @@
             // CompareCSSTextstextBox1
             // 
             this.CompareCSSTextstextBox1.Location = new System.Drawing.Point(2, 43);
+            this.CompareCSSTextstextBox1.MaxLength = 9999999;
             this.CompareCSSTextstextBox1.Multiline = true;
             this.CompareCSSTextstextBox1.Name = "CompareCSSTextstextBox1";
             this.CompareCSSTextstextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -48,6 +49,7 @@
             // CompareCSSTextstextBox2
             // 
             this.CompareCSSTextstextBox2.Location = new System.Drawing.Point(186, 43);
+            this.CompareCSSTextstextBox2.MaxLength = 9999999;
             this.CompareCSSTextstextBox2.Multiline = true;
             this.CompareCSSTextstextBox2.Name = "CompareCSSTextstextBox2";
             this.CompareCSSTextstextBox2.ScrollBars = System.Windows.Forms.ScrollBars.Both;
