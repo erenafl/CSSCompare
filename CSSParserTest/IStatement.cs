@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace CSSParser
 {
-    public class Property
+    public interface IStatement
     {
-        public string value { get; set; }
-        public Property(string val)
-        {
-            value = val;
-        }
+        void OutAsString();
     }
 }

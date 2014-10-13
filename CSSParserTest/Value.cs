@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace CSSParser
 {
-    public class Property
+    public class Value
     {
-        public string value { get; set; }
-        public Property(string val)
+        public Value() { }
+        public Value(string _value) 
         {
-            value = val;
+            value = _value;
         }
+        public string value{get; private set;}
     }
 }

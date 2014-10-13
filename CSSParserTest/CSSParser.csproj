@@ -78,10 +78,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddFont_FaceRuleDescriptors.cs" />
+    <Compile Include="AtCharsetRule.cs" />
+    <Compile Include="AtFont_FaceRule.cs" />
+    <Compile Include="AtImportRule.cs" />
+    <Compile Include="AtKeyframesRule.cs" />
+    <Compile Include="AtMediaRule.cs" />
+    <Compile Include="AtNamespaceRule.cs" />
+    <Compile Include="AtPageRule.cs" />
     <Compile Include="AtRule.cs" />
+    <Compile Include="AtRuleType.cs" />
+    <Compile Include="AtSupportsRule.cs" />
+    <Compile Include="AtWebkit_KeyframesRule.cs" />
     <Compile Include="CSSDocument.cs" />
     <Compile Include="Decleration.cs" />
     <Compile Include="Error.cs" />
+    <Compile Include="IStatement.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Property.cs" />

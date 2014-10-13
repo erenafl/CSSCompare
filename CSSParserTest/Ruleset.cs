@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 namespace CSSParser
 {
-    public class Selector
+    public class Ruleset : IStatement
     {
-        public string value { get; private set; }
-        public List<Decleration> declerations { get; private set; }
-
-        public Selector(string val)
+        public Ruleset() 
         {
             declerations = new List<Decleration>();
-            value = val;
         }
+        public List<Decleration> declerations { get; private set; }
+        public Selector selector { get; set; }
         public void AddDecleration(Decleration dec)
         {
             declerations.Add(dec);
+        }
+        public void OutAsString()
+        {
+
         }
 
     }

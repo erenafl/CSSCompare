@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace CSSParser
 {
-    public class Property
+    public abstract class AtRule : IStatement
     {
-        public string value { get; set; }
-        public Property(string val)
-        {
-            value = val;
-        }
+        public AtRule() { }
+        public AtRuleType RuleType;
+        public abstract void OutAsString();
+
     }
 }

@@ -7,7 +7,7 @@
     <ProjectGuid>{56026716-BC7C-4617-A479-0ED9EDD8C704}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CSSParser</RootNamespace>
+    <RootNamespace>CSSTest</RootNamespace>
     <AssemblyName>CSSTest</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -11,21 +11,13 @@ namespace CSSParser
 {
     public class CSSDocument
     {
-        //public List<Selector> selectors { get; private set; }
-        public List<Ruleset> rulesets { get; private set; }
+        public List<Ruleset> rulesets { get; set; }
         public List<AtRule> atrules { get; private set; }
         public CSSDocument()
         {
-            //selectors = new List<Selector>();
             rulesets = new List<Ruleset>();
             atrules = new List<AtRule>();
         }
-        /*
-        public void AddSelector(Selector s)
-        {
-            selectors.Add(s);
-        }
-         */
         public void AddRuleset(Ruleset rule)
         {
             rulesets.Add(rule);
