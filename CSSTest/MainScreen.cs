@@ -32,6 +32,7 @@ namespace CSSTest
                 css = new CSSDocument();
                 string raw_text = parser.getTextfromFile(ofd.FileName);
                 css = parser.ParseText(raw_text);
+                parsedCSSTreeView.Nodes.Clear();
                 FillTree(parsedCSSTreeView);
             }
             saveAsToolStripMenuItem.Enabled = true;
@@ -46,6 +47,7 @@ namespace CSSTest
                 var parser = new Parser();
                 css = new CSSDocument();
                 css = parser.ParseText(ti.RawText);
+                parsedCSSTreeView.Nodes.Clear();
                 FillTree(parsedCSSTreeView);
             }
             saveAsToolStripMenuItem.Enabled = true;

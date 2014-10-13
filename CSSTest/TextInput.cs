@@ -29,5 +29,10 @@ namespace CSSTest
             this.DialogResult = DialogResult.OK;
             this.Hide();
         }
+
+        private void cleartext_button_Click(object sender, EventArgs e)
+        {
+            this.parsetext_textbox.Clear();
+        }
     }
 }
