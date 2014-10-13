@@ -16,9 +16,20 @@ namespace CSSParser
             RuleType = AtRuleType.Webkit_Keyframes;
             Rulesets = new List<Ruleset>();
         }
-        public override void OutAsString()
+        public override string OutAsString()
         {
-
+            var XMLtext = "<" + "@-webkit-keyframes " + Identifier + ">\n";
+            foreach (Ruleset rule in Rulesets)
+            {
+                foreach (Decleration dec in rule.declerations)
+                {
+                    XMLtext += "     <" + dec.property.value + ">\n";
+                    XMLtext += "          " + dec.value.value + "\n";
+                    XMLtext += "     </" + dec.property.value + ">\n";
+                }
+            }
+            XMLtext += "</" + "@-webkit-keyframes " + Identifier + ">\n";
+            return XMLtext;
         }
     }
 }

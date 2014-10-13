@@ -10,7 +10,7 @@ namespace CSSParser
     {
         public AtRule() { }
         public AtRuleType RuleType;
-        public abstract void OutAsString();
+        public abstract string OutAsString();
 
     }
 }

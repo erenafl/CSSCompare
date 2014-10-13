@@ -18,9 +18,17 @@ namespace CSSParser
         {
             declerations.Add(dec);
         }
-        public void OutAsString()
+        public string OutAsString()
         {
-
+            var XMLtext = "<" + selector.value + ">\n";
+            foreach (Decleration dec in declerations)
+            {
+                XMLtext += "     <" + dec.property.value + ">\n";
+                XMLtext += "          " + dec.value.value + "\n";
+                XMLtext += "     </" + dec.property.value + ">\n";
+            }
+            XMLtext += "</" + selector.value + ">\n";
+            return XMLtext;
         }
 
     }

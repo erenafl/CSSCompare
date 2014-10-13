@@ -14,8 +14,11 @@ namespace CSSParser
         }
         public string Prefix { get; set; }
         public string Url { get; set; }
-        public override void OutAsString()
+        public override string OutAsString()
         {
+            var XMLtext = "<" + "@namespace " + Prefix + Url + ">\n";
+            XMLtext += "</" + "@namespace " + Prefix + Url + ">\n";
+            return XMLtext;
 
         }
     }

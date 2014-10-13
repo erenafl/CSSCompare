@@ -13,9 +13,11 @@ namespace CSSParser
             RuleType = AtRuleType.Charset;
         }
         public string Charset { get; set; }
-        public override void OutAsString()
+        public override string OutAsString()
         {
-
+            var XMLtext = "<" + "@charset " + Charset +  ">\n";
+            XMLtext += "</" + "@charset " + Charset + ">\n";
+            return XMLtext;
         }
     }
 }

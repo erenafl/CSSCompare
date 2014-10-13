@@ -32,7 +32,7 @@ namespace CSSTest
                 css = new CSSDocument();
                 string raw_text = parser.getTextfromFile(ofd.FileName);
                 css = parser.ParseText(raw_text);
-                fillTree(parsedCSSTreeView);
+                FillTree(parsedCSSTreeView);
             }
             saveAsToolStripMenuItem.Enabled = true;
         }
@@ -46,7 +46,7 @@ namespace CSSTest
                 var parser = new Parser();
                 css = new CSSDocument();
                 css = parser.ParseText(ti.RawText);
-                fillTree(parsedCSSTreeView);
+                FillTree(parsedCSSTreeView);
             }
             saveAsToolStripMenuItem.Enabled = true;
         }
@@ -64,18 +64,165 @@ namespace CSSTest
                 System.IO.File.WriteAllText(saveFileDialog1.FileName, css.generateXML());
             }
         }
-        private void fillTree(TreeView tv)
+        private void FillTree(TreeView tv)
         {
-            foreach (Ruleset rule in css.rulesets) 
+            FillAtRules(tv);
+            FillRuleSets(tv);
+        }
+
+        private void FillRuleSets(TreeView tv)
+        {
+            foreach (Ruleset rule in css.rulesets)
             {
                 TreeNode parent = new TreeNode(rule.selector.value);
-                foreach (Decleration dec in rule.declerations) 
+                foreach (Decleration dec in rule.declerations)
                 {
                     TreeNode child = new TreeNode(dec.property.value);
                     child.Nodes.Add(new TreeNode(dec.value.value));
                     parent.Nodes.Add(child);
                 }
                 tv.Nodes.Add(parent);
+            }
+        }
+
+        private void FillAtRules(TreeView tv)
+        {
+            foreach (AtRule atrule in css.atrules)
+            {
+                string RuleName;
+                switch (atrule.RuleType)
+                {
+                    case AtRuleType.Charset: 
+                        { 
+                            RuleName = "@charset";
+                            AtCharsetRule acr = (AtCharsetRule)atrule;
+                            TreeNode parent = new TreeNode(RuleName + " " +  acr.Charset);
+                            tv.Nodes.Add(parent);
+                            break; 
+                        }
+                    case AtRuleType.Namespace:
+                        {
+                            RuleName = "@namespace";
+                            AtNamespaceRule anr = (AtNamespaceRule)atrule;
+                            TreeNode parent = new TreeNode(RuleName + " " + anr.Prefix + anr.Url);
+                            tv.Nodes.Add(parent);
+                            break;
+                        }
+                    case AtRuleType.Import:
+                        {
+                            RuleName = "@import";
+                            AtImportRule air = (AtImportRule)atrule;
+                            TreeNode parent = new TreeNode(RuleName + " " + air.Url + air.ListOfMediaQueries);
+                            tv.Nodes.Add(parent);
+                            break;
+                        }
+                    case AtRuleType.Font_face:
+                        {
+                            RuleName = "@font-face";
+                            AtFont_FaceRule affr = (AtFont_FaceRule)atrule;
+                            TreeNode parent = new TreeNode(RuleName);
+                            foreach (Decleration dec in affr.Declerations)
+                            {
+                                TreeNode child = new TreeNode(dec.property.value);
+                                child.Nodes.Add(new TreeNode(dec.value.value));
+                                parent.Nodes.Add(child);
+                            }
+                            tv.Nodes.Add(parent);
+                            break;
+                        }
+                    case AtRuleType.Page:
+                        {
+                            RuleName = "@page";
+                            AtPageRule apr = (AtPageRule)atrule;
+                            TreeNode parent = new TreeNode(RuleName + " " +  apr.PseudoClass);
+                            foreach (Decleration dec in apr.Declerations)
+                            {
+                                TreeNode child = new TreeNode(dec.property.value);
+                                child.Nodes.Add(new TreeNode(dec.value.value));
+                                parent.Nodes.Add(child);
+                            }
+                            tv.Nodes.Add(parent);
+                            break;
+                        }
+                    case AtRuleType.Media:
+                        {
+                            RuleName = "@media";
+                            AtMediaRule amr = (AtMediaRule)atrule;
+                            TreeNode parent = new TreeNode(RuleName + " " + amr.MediaQueries);
+                            foreach (Ruleset rule in amr.MediaSpecificRulesets)
+                            {
+                                TreeNode child = new TreeNode(rule.selector.value);
+                                foreach (Decleration dec in rule.declerations)
+                                {
+                                    TreeNode grandchild = new TreeNode(dec.property.value);
+                                    grandchild.Nodes.Add(new TreeNode(dec.value.value));
+                                    child.Nodes.Add(grandchild);
+                                }
+                                parent.Nodes.Add(child);
+                            }
+                            tv.Nodes.Add(parent);
+                            break;
+                        }
+                    case AtRuleType.Supports:
+                        {
+                            RuleName = "@supports";
+                            AtSupportsRule asr = (AtSupportsRule)atrule;
+                            TreeNode parent = new TreeNode(RuleName + " " + asr.Conditions);
+                            foreach (Ruleset rule in asr.SupportSpecificRulesets)
+                            {
+                                TreeNode child = new TreeNode(rule.selector.value);
+                                foreach (Decleration dec in rule.declerations)
+                                {
+                                    TreeNode grandchild = new TreeNode(dec.property.value);
+                                    grandchild.Nodes.Add(new TreeNode(dec.value.value));
+                                    child.Nodes.Add(grandchild);
+                                }
+                                parent.Nodes.Add(child);
+                            }
+                            tv.Nodes.Add(parent);
+                            break;
+                        }
+                    case AtRuleType.Keyframes:
+                        {
+                            RuleName = "@keyframes";
+                            AtKeyframesRule akr = (AtKeyframesRule)atrule;
+                            TreeNode parent = new TreeNode(RuleName + " " + akr.Identifier);
+                            foreach (Ruleset rule in akr.Rulesets)
+                            {
+                                TreeNode child = new TreeNode(rule.selector.value);
+                                foreach (Decleration dec in rule.declerations)
+                                {
+                                    TreeNode grandchild = new TreeNode(dec.property.value);
+                                    grandchild.Nodes.Add(new TreeNode(dec.value.value));
+                                    child.Nodes.Add(grandchild);
+                                }
+                                parent.Nodes.Add(child);
+                            }
+                            tv.Nodes.Add(parent);
+                            break;
+                        }
+                    case AtRuleType.Webkit_Keyframes:
+                        {
+                            RuleName = "@-webkit-keyframes";
+                            AtWebkit_KeyframesRule awkr = (AtWebkit_KeyframesRule)atrule;
+                            TreeNode parent = new TreeNode(RuleName + " " + awkr.Identifier);
+                            foreach (Ruleset rule in awkr.Rulesets)
+                            {
+                                TreeNode child = new TreeNode(rule.selector.value);
+                                foreach (Decleration dec in rule.declerations)
+                                {
+                                    TreeNode grandchild = new TreeNode(dec.property.value);
+                                    grandchild.Nodes.Add(new TreeNode(dec.value.value));
+                                    child.Nodes.Add(grandchild);
+                                }
+                                parent.Nodes.Add(child);
+                            }
+                            tv.Nodes.Add(parent);
+                            break;
+                        }
+                }
+                    
+                
             }
         }
 

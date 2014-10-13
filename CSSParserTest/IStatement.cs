@@ -8,6 +8,6 @@ namespace CSSParser
 {
     public interface IStatement
     {
-        void OutAsString();
+        string OutAsString();
     }
 }

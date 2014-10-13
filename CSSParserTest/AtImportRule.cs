@@ -14,9 +14,11 @@ namespace CSSParser
         }
         public string Url { get; set; }
         public string ListOfMediaQueries { get; set; }
-        public override void OutAsString()
+        public override string OutAsString()
         {
-
+            var XMLtext = "<" + "@import " + Url + ListOfMediaQueries + ">\n";
+            XMLtext += "</" + "@import " + Url + ListOfMediaQueries + ">\n";
+            return XMLtext;
         }
     }
 }

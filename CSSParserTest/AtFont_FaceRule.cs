@@ -14,9 +14,17 @@ namespace CSSParser
             RuleType = AtRuleType.Font_face;
             Declerations = new List<Decleration>();
         }
-        public override void OutAsString()
+        public override string OutAsString()
         {
-
+            var XMLtext = "<" + "@font-face " + ">\n";
+            foreach (Decleration dec in Declerations)
+            {
+                XMLtext += "     <" + dec.property.value + ">\n";
+                XMLtext += "          " + dec.value.value + "\n";
+                XMLtext += "     </" + dec.property.value + ">\n";
+            }
+            XMLtext += "</" + "@font-face " + ">\n";
+            return XMLtext;
         }
     }
 }
