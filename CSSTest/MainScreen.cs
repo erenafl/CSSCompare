@@ -34,8 +34,9 @@ namespace CSSTest
                 css = parser.ParseText(raw_text);
                 parsedCSSTreeView.Nodes.Clear();
                 FillTree(parsedCSSTreeView);
+                if (parsedCSSTreeView.Nodes.Count != 0) saveAsToolStripMenuItem.Enabled = true;
             }
-            saveAsToolStripMenuItem.Enabled = true;
+            
         }
 
         private void parseTextToolStripMenuItem_Click(object sender, EventArgs e)
@@ -49,8 +50,9 @@ namespace CSSTest
                 css = parser.ParseText(ti.RawText);
                 parsedCSSTreeView.Nodes.Clear();
                 FillTree(parsedCSSTreeView);
+                if(parsedCSSTreeView.Nodes.Count != 0)saveAsToolStripMenuItem.Enabled = true;
             }
-            saveAsToolStripMenuItem.Enabled = true;
+            
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)

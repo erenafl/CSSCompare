@@ -181,6 +181,13 @@ namespace CSSTest
 
             }
         }
+
+        private void ResultScreen_SizeChanged(object sender, EventArgs e)
+        {
+            parsedCSStreeView1.Width = this.Width / 2 - 22;
+            parsedCSStreeView2.Left = parsedCSStreeView1.Width + 12;
+            parsedCSStreeView2.Width = this.Width / 2 - 22;
+        }
     }
 
 }

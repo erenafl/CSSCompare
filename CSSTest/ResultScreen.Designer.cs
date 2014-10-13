@@ -34,6 +34,8 @@
             // 
             // parsedCSStreeView1
             // 
+            this.parsedCSStreeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.parsedCSStreeView1.Location = new System.Drawing.Point(12, 12);
             this.parsedCSStreeView1.Name = "parsedCSStreeView1";
             this.parsedCSStreeView1.Size = new System.Drawing.Size(162, 286);
@@ -41,6 +43,8 @@
             // 
             // parsedCSStreeView2
             // 
+            this.parsedCSStreeView2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.parsedCSStreeView2.Location = new System.Drawing.Point(180, 12);
             this.parsedCSStreeView2.Name = "parsedCSStreeView2";
             this.parsedCSStreeView2.Size = new System.Drawing.Size(160, 286);
@@ -55,6 +59,7 @@
             this.Controls.Add(this.parsedCSStreeView1);
             this.Name = "ResultScreen";
             this.Text = "ResultScreen";
+            this.SizeChanged += new System.EventHandler(this.ResultScreen_SizeChanged);
             this.ResumeLayout(false);
 
         }

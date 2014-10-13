@@ -37,6 +37,8 @@
             // 
             // CompareCSSTextstextBox1
             // 
+            this.CompareCSSTextstextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.CompareCSSTextstextBox1.Location = new System.Drawing.Point(2, 43);
             this.CompareCSSTextstextBox1.MaxLength = 9999999;
             this.CompareCSSTextstextBox1.Multiline = true;
@@ -48,6 +50,8 @@
             // 
             // CompareCSSTextstextBox2
             // 
+            this.CompareCSSTextstextBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.CompareCSSTextstextBox2.Location = new System.Drawing.Point(186, 43);
             this.CompareCSSTextstextBox2.MaxLength = 9999999;
             this.CompareCSSTextstextBox2.Multiline = true;
@@ -68,6 +72,7 @@
             // 
             // CompareCSSTextLabel_2
             // 
+            this.CompareCSSTextLabel_2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CompareCSSTextLabel_2.AutoSize = true;
             this.CompareCSSTextLabel_2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.CompareCSSTextLabel_2.Location = new System.Drawing.Point(257, 13);
@@ -78,6 +83,7 @@
             // 
             // compareCSSTexts
             // 
+            this.compareCSSTexts.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.compareCSSTexts.Enabled = false;
             this.compareCSSTexts.Location = new System.Drawing.Point(127, 331);
             this.compareCSSTexts.Name = "compareCSSTexts";
@@ -99,6 +105,7 @@
             this.Controls.Add(this.CompareCSSTextstextBox1);
             this.Name = "CompareTextsScreen";
             this.Text = "CompareTexts";
+            this.SizeChanged += new System.EventHandler(this.CompareTextsScreen_SizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 

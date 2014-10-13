@@ -52,5 +52,15 @@ namespace CSSTest
             else compareCSSTexts.Enabled = false;
         }
 
+        private void CompareTextsScreen_SizeChanged(object sender, EventArgs e)
+        {
+            CompareCSSTextstextBox1.Width = this.Width / 2 - 6;
+            CompareCSSTextstextBox2.Left = CompareCSSTextstextBox1.Width + 2;
+            CompareCSSTextstextBox2.Width = this.Width / 2 - 10;
+
+            CompareCSSTextLabel_1.Left= this.Width / 4 - 6;
+            CompareCSSTextLabel_2.Left = this.Width / 2 + this.Width / 4 - 6;
+        }
+
     }
 }

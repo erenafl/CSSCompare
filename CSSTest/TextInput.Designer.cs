@@ -59,7 +59,7 @@
             // 
             // cleartext_button
             // 
-            this.cleartext_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cleartext_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cleartext_button.Location = new System.Drawing.Point(29, 234);
             this.cleartext_button.Name = "cleartext_button";
             this.cleartext_button.Size = new System.Drawing.Size(75, 23);
