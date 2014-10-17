@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace CSSParser
 {
-    public class AtKeyframesRule : AtRule
+    public class AtWebkit_DocumentRule : AtRule
     {
         public List<Ruleset> Rulesets { get; set; }
         public string Identifier { get; set; }
-        public AtKeyframesRule() 
+        public AtWebkit_DocumentRule()
         {
-            RuleType = AtRuleType.Keyframes;
+            RuleType = AtRuleType.Webkit_Document;
             Rulesets = new List<Ruleset>();
         }
         public override string OutAsString()
         {
-            var XMLtext = "<" + "@keyframes " + Identifier + ">\n";
+            var XMLtext = "<" + "@-webkit-document " + Identifier + ">\n";
             foreach (Ruleset rule in Rulesets)
             {
                 XMLtext += "     <" + rule.selector.value + ">\n";
@@ -29,7 +29,7 @@ namespace CSSParser
                 }
                 XMLtext += "     </" + rule.selector.value + ">\n";
             }
-            XMLtext += "</" + "@keyframes " + Identifier + ">\n";
+            XMLtext += "</" + "@-webkit-document " + Identifier + ">\n";
             return XMLtext;
         }
     }

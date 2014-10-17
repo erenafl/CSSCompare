@@ -22,13 +22,15 @@ namespace CSSParser
         public override string OutAsString()
         {
             var XMLtext = "<" + "@media " + MediaQueries +  ">\n";
-            foreach (Ruleset rule in MediaSpecificRulesets) { 
+            foreach (Ruleset rule in MediaSpecificRulesets) {
+                XMLtext += "     <" + rule.selector.value + ">\n";
                 foreach (Decleration dec in rule.declerations)
                 {
-                    XMLtext += "     <" + dec.property.value + ">\n";
-                    XMLtext += "          " + dec.value.value + "\n";
-                    XMLtext += "     </" + dec.property.value + ">\n";
+                    XMLtext += "          <" + dec.property.value + ">\n";
+                    XMLtext += "               " + dec.value.value + "\n";
+                    XMLtext += "          </" + dec.property.value + ">\n";
                 }
+                XMLtext += "     </" + rule.selector.value + ">\n";
             }
             XMLtext += "</" + "@media " + MediaQueries + ">\n";
             return XMLtext;

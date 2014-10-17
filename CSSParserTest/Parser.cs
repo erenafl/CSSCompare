@@ -72,7 +72,7 @@ namespace CSSParser
                     if (SelectorsAndDeclerations[0].Contains(","))
                     {
                         string[] selectors = SelectorsAndDeclerations[0].Split(',');
-                        string[] declerations = SelectorsAndDeclerations[1].Split(';');
+                        List<string> declerations = SelectorsAndDeclerations[1].Split(';').ToList();
                         foreach (string selector in selectors)
                         {
                             if (selector != "")
@@ -80,12 +80,19 @@ namespace CSSParser
                                 var rule = new Ruleset();
                                 Selector slctr = new Selector(selector.Trim());
                                 rule.selector = slctr;
-                                foreach (string decleration_raw in declerations)
+                                for(int i = 0; i < declerations.Count ; i++)
                                 {
-                                    var decleration = decleration_raw.Trim();
+                                    var decleration = declerations[i];
                                     if (decleration != "")
                                     {
-                                        string[] PropertyAndValue = decleration.Split(':');
+                                        if (decleration.Contains("url") && decleration.Contains("(") && !decleration.Contains(")"))
+                                        {
+                                            decleration += ";" + declerations[i + 1];
+                                            declerations.Remove(declerations[i + 1]);
+                                            decleration = decleration.Trim();
+                                        }
+                                        
+                                        string[] PropertyAndValue = decleration.Split(":".ToCharArray(), 2);
                                         var property = new Property(PropertyAndValue[0].Trim());
                                         var value = new Value(PropertyAndValue[1].Trim());
                                         var dec = new Decleration(property, value);
@@ -102,19 +109,25 @@ namespace CSSParser
                         var rule = new Ruleset();
                         Selector slctr = new Selector(SelectorsAndDeclerations[0].Trim());
                         rule.selector = slctr;
-                        string[] declerations = SelectorsAndDeclerations[1].Split(';');
-                        foreach (string decleration_raw in declerations)
+                        List<string> declerations = SelectorsAndDeclerations[1].Split(';').ToList();
+                        for (int i = 0; i < declerations.Count; i++)
                         {
-                            var decleration = decleration_raw.Trim();
+                            var decleration = declerations[i];
                             if (decleration != "")
                             {
-                                string[] PropertyAndValue = decleration.Split(':');
+                                if (decleration.Contains("url") && decleration.Contains("(") && !decleration.Contains(")"))
+                                {
+                                    decleration += ";" +  declerations[i + 1];
+                                    declerations.Remove(declerations[i + 1]);
+                                    decleration = decleration.Trim();
+                                }
+
+                                string[] PropertyAndValue = decleration.Split(":".ToCharArray(), 2);
                                 var property = new Property(PropertyAndValue[0].Trim());
                                 var value = new Value(PropertyAndValue[1].Trim());
                                 var dec = new Decleration(property, value);
                                 rule.AddDecleration(dec);
                             }
-
                         }
                         rulesets.Add(rule);
                     }
@@ -334,13 +347,73 @@ namespace CSSParser
                 var webkit_keyframesRule_TrimmedText = webkit_keyframesRule_Text.Substring(0, webkit_keyframesRule_Text.Length - 1);
                 webkit_keyframesRule.Identifier = webkit_keyframesRule_TrimmedText.Split('{')[0].Substring("@-webkit-keyframes".Length + 1);
                 ParseRuleSets(webkit_keyframesRule_TrimmedText.Substring(webkit_keyframesRule_TrimmedText.IndexOf("{", 0) + 1), webkit_keyframesRule.Rulesets);
-                //MergeRulesets(keyframesRule.Rulesets);
+                //MergeRulesets(webkit_keyframesRule.Rulesets);
                 css.AddAtRule(webkit_keyframesRule);
                 css_text = css_text.Replace(webkit_keyframesRule_Text, "");
                 i = 0; j = 0; k = 0;
             }
 
+            i = 0; j = 0; k = 0;
+            while ((i = css_text.IndexOf("@-moz-keyframes", i)) != -1)
+            {
+                j = i;
+                k = css_text.IndexOf("}", i);
+                bool isFound = true;
+                while (isFound)
+                {
+                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
+                    {
+                        isFound = false;
+                        j = k;
+                        continue;
+                    }
+                    j = k;
+                    k++;
+                    k = css_text.IndexOf("}", k);
+                }
 
+                var moz_keyframesRule_Text = css_text.Substring(i, (j - i + 1));
+
+                var moz_keyframesRule = new AtMoz_KeyframesRule();
+                var moz_keyframesRule_TrimmedText = moz_keyframesRule_Text.Substring(0, moz_keyframesRule_Text.Length - 1);
+                moz_keyframesRule.Identifier = moz_keyframesRule_TrimmedText.Split('{')[0].Substring("@-moz-keyframes".Length + 1);
+                ParseRuleSets(moz_keyframesRule_TrimmedText.Substring(moz_keyframesRule_TrimmedText.IndexOf("{", 0) + 1), moz_keyframesRule.Rulesets);
+                //MergeRulesets(moz_keyframesRule.Rulesets);
+                css.AddAtRule(moz_keyframesRule);
+                css_text = css_text.Replace(moz_keyframesRule_Text, "");
+                i = 0; j = 0; k = 0;
+            }
+
+            i = 0; j = 0; k = 0;
+            while ((i = css_text.IndexOf("@-o-keyframes", i)) != -1)
+            {
+                j = i;
+                k = css_text.IndexOf("}", i);
+                bool isFound = true;
+                while (isFound)
+                {
+                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
+                    {
+                        isFound = false;
+                        j = k;
+                        continue;
+                    }
+                    j = k;
+                    k++;
+                    k = css_text.IndexOf("}", k);
+                }
+
+                var o_keyframesRule_Text = css_text.Substring(i, (j - i + 1));
+
+                var o_keyframesRule = new AtO_KeyframesRule();
+                var o_keyframesRule_TrimmedText = o_keyframesRule_Text.Substring(0, o_keyframesRule_Text.Length - 1);
+                o_keyframesRule.Identifier = o_keyframesRule_TrimmedText.Split('{')[0].Substring("@-o-keyframes".Length + 1);
+                ParseRuleSets(o_keyframesRule_TrimmedText.Substring(o_keyframesRule_TrimmedText.IndexOf("{", 0) + 1), o_keyframesRule.Rulesets);
+                //MergeRulesets(moz_keyframesRule.Rulesets);
+                css.AddAtRule(o_keyframesRule);
+                css_text = css_text.Replace(o_keyframesRule_Text, "");
+                i = 0; j = 0; k = 0;
+            }
 
             i = 0; j = 0;
             while ((i = css_text.IndexOf("@page", i)) != -1)
@@ -369,6 +442,102 @@ namespace CSSParser
 
                 css_text = css_text.Replace(pageRule_Text, "");
                 i = 0; j = 0;
+            }
+
+            i = 0; j = 0; k = 0;
+            while ((i = css_text.IndexOf("@document", i)) != -1)
+            {
+                j = i;
+                k = css_text.IndexOf("}", i);
+                bool isFound = true;
+                while (isFound)
+                {
+                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
+                    {
+                        isFound = false;
+                        j = k;
+                        continue;
+                    }
+                    j = k;
+                    k++;
+                    k = css_text.IndexOf("}", k);
+                }
+
+                var documentRule_Text = css_text.Substring(i, (j - i + 1));
+
+                var documentRule = new AtDocumentRule();
+                var documentRule_TrimmedText = documentRule_Text.Substring(0, documentRule_Text.Length - 1);
+                documentRule.Identifier = documentRule_TrimmedText.Split('{')[0].Substring("@document".Length + 1);
+                ParseRuleSets(documentRule_TrimmedText.Substring(documentRule_TrimmedText.IndexOf("{", 0) + 1), documentRule.Rulesets);
+                MergeRulesets(documentRule.Rulesets);
+                css.AddAtRule(documentRule);
+
+                css_text = css_text.Replace(documentRule_Text, "");
+                i = 0; j = 0; k = 0;
+            }
+
+            i = 0; j = 0; k = 0;
+            while ((i = css_text.IndexOf("@-moz-document", i)) != -1)
+            {
+                j = i;
+                k = css_text.IndexOf("}", i);
+                bool isFound = true;
+                while (isFound)
+                {
+                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
+                    {
+                        isFound = false;
+                        j = k;
+                        continue;
+                    }
+                    j = k;
+                    k++;
+                    k = css_text.IndexOf("}", k);
+                }
+
+                var moz_documentRule_Text = css_text.Substring(i, (j - i + 1));
+
+                var moz_documentRule = new AtMoz_DocumentRule();
+                var moz_documentRule_TrimmedText = moz_documentRule_Text.Substring(0, moz_documentRule_Text.Length - 1);
+                moz_documentRule.Identifier = moz_documentRule_TrimmedText.Split('{')[0].Substring("@-moz-document".Length + 1);
+                ParseRuleSets(moz_documentRule_TrimmedText.Substring(moz_documentRule_TrimmedText.IndexOf("{", 0) + 1), moz_documentRule.Rulesets);
+                MergeRulesets(moz_documentRule.Rulesets);
+                css.AddAtRule(moz_documentRule);
+
+                css_text = css_text.Replace(moz_documentRule_Text, "");
+                i = 0; j = 0; k = 0;
+            }
+
+            i = 0; j = 0; k = 0;
+            while ((i = css_text.IndexOf("@-webkit-document", i)) != -1)
+            {
+                j = i;
+                k = css_text.IndexOf("}", i);
+                bool isFound = true;
+                while (isFound)
+                {
+                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
+                    {
+                        isFound = false;
+                        j = k;
+                        continue;
+                    }
+                    j = k;
+                    k++;
+                    k = css_text.IndexOf("}", k);
+                }
+
+                var webkit_documentRule_Text = css_text.Substring(i, (j - i + 1));
+
+                var webkit_documentRule = new AtWebkit_DocumentRule();
+                var webkit_documentRule_TrimmedText = webkit_documentRule_Text.Substring(0, webkit_documentRule_Text.Length - 1);
+                webkit_documentRule.Identifier = webkit_documentRule_TrimmedText.Split('{')[0].Substring("@-webkit-document".Length + 1);
+                ParseRuleSets(webkit_documentRule_TrimmedText.Substring(webkit_documentRule_TrimmedText.IndexOf("{", 0) + 1), webkit_documentRule.Rulesets);
+                MergeRulesets(webkit_documentRule.Rulesets);
+                css.AddAtRule(webkit_documentRule);
+
+                css_text = css_text.Replace(webkit_documentRule_Text, "");
+                i = 0; j = 0; k = 0;
             }
 
             #endregion

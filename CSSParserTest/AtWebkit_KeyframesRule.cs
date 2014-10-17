@@ -21,12 +21,14 @@ namespace CSSParser
             var XMLtext = "<" + "@-webkit-keyframes " + Identifier + ">\n";
             foreach (Ruleset rule in Rulesets)
             {
+                XMLtext += "     <" + rule.selector.value + ">\n";
                 foreach (Decleration dec in rule.declerations)
                 {
-                    XMLtext += "     <" + dec.property.value + ">\n";
-                    XMLtext += "          " + dec.value.value + "\n";
-                    XMLtext += "     </" + dec.property.value + ">\n";
+                    XMLtext += "          <" + dec.property.value + ">\n";
+                    XMLtext += "               " + dec.value.value + "\n";
+                    XMLtext += "          </" + dec.property.value + ">\n";
                 }
+                XMLtext += "     </" + rule.selector.value + ">\n";
             }
             XMLtext += "</" + "@-webkit-keyframes " + Identifier + ">\n";
             return XMLtext;

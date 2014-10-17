@@ -17,6 +17,11 @@ namespace CSSParser
         Page,
         Keyframes,
         Webkit_Keyframes,
+        Moz_Keyframes,
+        O_Keyframes,
+        Document,
+        Moz_Document,
+        Webkit_Document,
         Other
 
     }
