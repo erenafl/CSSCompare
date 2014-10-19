@@ -11,17 +11,27 @@ namespace CSSParser
         public AtMediaRule()
         {
             MediaSpecificRulesets = new List<Ruleset>();
+            MediaSpecificAtrules = new List<AtRule>();
             RuleType = AtRuleType.Media;
         }
         public List<Ruleset> MediaSpecificRulesets{ get; set; }
+        public List<AtRule> MediaSpecificAtrules { get; set; }
         public string MediaQueries;
         public void AddRuleset(Ruleset rule)
         {
             MediaSpecificRulesets.Add(rule);
         }
+        public void AtRule(AtRule atRule)
+        {
+            MediaSpecificAtrules.Add(atRule);
+        }
         public override string OutAsString()
         {
             var XMLtext = "<" + "@media " + MediaQueries +  ">\n";
+            foreach (AtRule atRule in MediaSpecificAtrules)
+            {
+                XMLtext += atRule.OutAsString();
+            }
             foreach (Ruleset rule in MediaSpecificRulesets) {
                 XMLtext += "     <" + rule.selector.value + ">\n";
                 foreach (Decleration dec in rule.declerations)

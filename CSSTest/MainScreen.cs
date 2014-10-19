@@ -70,13 +70,13 @@ namespace CSSTest
         }
         private void FillTree(TreeView tv)
         {
-            FillAtRules(tv);
-            FillRuleSets(tv);
+            FillAtRules(tv, css.atrules);
+            FillRuleSets(tv, css.rulesets);
         }
 
-        private void FillRuleSets(TreeView tv)
+        private void FillRuleSets(TreeView tv, List<Ruleset> rulesets)
         {
-            foreach (Ruleset rule in css.rulesets)
+            foreach (Ruleset rule in rulesets)
             {
                 TreeNode parent = new TreeNode(rule.selector.value);
                 foreach (Decleration dec in rule.declerations)
@@ -89,9 +89,9 @@ namespace CSSTest
             }
         }
 
-        private void FillAtRules(TreeView tv)
+        private void FillAtRules(TreeView tv, List<AtRule> atrules)
         {
-            foreach (AtRule atrule in css.atrules)
+            foreach (AtRule atrule in atrules)
             {
                 string RuleName;
                 switch (atrule.RuleType)
@@ -153,16 +153,17 @@ namespace CSSTest
                             RuleName = "@media";
                             AtMediaRule amr = (AtMediaRule)atrule;
                             TreeNode parent = new TreeNode(RuleName + " " + amr.MediaQueries);
-                            foreach (Ruleset rule in amr.MediaSpecificRulesets)
+                            var tv2 = new TreeView();
+                            var tv3 = new TreeView();
+                            FillAtRules(tv2, amr.MediaSpecificAtrules);
+                            foreach(TreeNode node in tv2.Nodes) 
                             {
-                                TreeNode child = new TreeNode(rule.selector.value);
-                                foreach (Decleration dec in rule.declerations)
-                                {
-                                    TreeNode grandchild = new TreeNode(dec.property.value);
-                                    grandchild.Nodes.Add(new TreeNode(dec.value.value));
-                                    child.Nodes.Add(grandchild);
-                                }
-                                parent.Nodes.Add(child);
+                                parent.Nodes.Add((TreeNode)node.Clone());
+                            }
+                            FillRuleSets(tv3, amr.MediaSpecificRulesets);
+                            foreach (TreeNode node in tv3.Nodes)
+                            {
+                                parent.Nodes.Add((TreeNode)node.Clone());
                             }
                             tv.Nodes.Add(parent);
                             break;

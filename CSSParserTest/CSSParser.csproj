@@ -92,6 +92,7 @@
     <Compile Include="AtPageRule.cs" />
     <Compile Include="AtRule.cs" />
     <Compile Include="AtRuleType.cs" />
+    <Compile Include="AtRuleTypeExplicit.cs" />
     <Compile Include="AtSupportsRule.cs" />
     <Compile Include="AtWebkit_DocumentRule.cs" />
     <Compile Include="AtWebkit_KeyframesRule.cs" />

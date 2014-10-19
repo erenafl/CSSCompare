@@ -12,19 +12,11 @@ namespace CSSParser
     public class CSSDocument
     {
         public List<Ruleset> rulesets { get; set; }
-        public List<AtRule> atrules { get; private set; }
+        public List<AtRule> atrules { get; set; }
         public CSSDocument()
         {
             rulesets = new List<Ruleset>();
             atrules = new List<AtRule>();
-        }
-        public void AddRuleset(Ruleset rule)
-        {
-            rulesets.Add(rule);
-        }
-        public void AddAtRule(AtRule atrule)
-        {
-            atrules.Add(atrule);
         }
         public void writetoXML(string filename)
         {
