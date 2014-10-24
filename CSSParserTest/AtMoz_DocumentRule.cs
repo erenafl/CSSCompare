@@ -8,17 +8,19 @@ namespace CSSParser
 {
     public class AtMoz_DocumentRule : AtRule
     {
-        public List<Ruleset> Rulesets { get; set; }
+        public List<Ruleset> DocumentSpesificRulesets { get; set; }
+        public List<AtRule> DocumentSpecificAtrules { get; set; }
         public string Identifier { get; set; }
         public AtMoz_DocumentRule()
         {
             RuleType = AtRuleType.Moz_Document;
-            Rulesets = new List<Ruleset>();
+            DocumentSpesificRulesets = new List<Ruleset>();
+            DocumentSpecificAtrules = new List<AtRule>();
         }
         public override string OutAsString()
         {
             var XMLtext = "<" + "@-moz-document " + Identifier + ">\n";
-            foreach (Ruleset rule in Rulesets)
+            foreach (Ruleset rule in DocumentSpesificRulesets)
             {
                 XMLtext += "     <" + rule.selector.value + ">\n";
                 foreach (Decleration dec in rule.declerations)

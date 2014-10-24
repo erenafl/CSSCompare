@@ -13,7 +13,6 @@ namespace CSSParser
     public class Parser
     {
 		private CSSDocument css;
-        char[] delimiterChars = { '{', '}' };
         public Parser() { }
 
         public CSSDocument ParseText(string raw_text)
@@ -137,160 +136,113 @@ namespace CSSParser
         }
 
 
-
-
-
-        private string ParseAtMediaRule(string css_text, List<AtRule> atrules, bool parseAll)
+        private string ParseSpecificAtRule(string atRuleType, string atRuleText, List<AtRule> atrules, bool parseToEnd) 
         {
-            int i = 0;
-            int j = 0;
-            int k = 0;
-            int l = 0;
-            int m = 0;
+            string parsedText = "";
+            switch (atRuleType)
+            {
+                case "@charset":
+                    {
+                        parsedText = ParseAtCharsetRule(atRuleText, atrules);
+                        break;
+                    }
+                case "@import":
+                    {
+                        parsedText = ParseAtImportRule(atRuleText, atrules);
+                        break;
+                    }
+                case "@namespace":
+                    {
+                        parsedText = ParseAtNamespaceRule(atRuleText, atrules);
+                        break;
+                    }
+                case "@media":
+                    {
+                        parsedText = ParseAtMediaRule(atRuleText, atrules, parseToEnd);
+                        break;
+                    }
+                case "@font-face":
+                    {
+                        parsedText = ParseAtFont_FaceRule(atRuleText, atrules, parseToEnd);
+                        break;
+                    }
+                case "@page":
+                    {
+                        parsedText = ParseAtPageRule(atRuleText, atrules, parseToEnd);
+                        break;
+                    }
+                case "@supports":
+                    {
+                        parsedText = ParseAtSupportsRule(atRuleText, atrules, parseToEnd);
+                        break;
+                    }
+                case "@document":
+                    {
+                        parsedText = ParseAtDocumentRule(atRuleText, atrules, parseToEnd);
+                        break;
+                    }
+                case "@keyframes":
+                    {
+                        parsedText = ParseAtKeyframesRule(atRuleText, atrules, parseToEnd);
+                        break;
+                    }
+                case "@-moz-document":
+                    {
+                        parsedText = ParseAtMoz_DocumentRule(atRuleText, atrules, parseToEnd);
+                        break;
+                    }
+                case "@-webkit-document":
+                    {
+                        parsedText = ParseAtWebkit_DocumentRule(atRuleText, atrules, parseToEnd);
+                        break;
+                    }
+                case "@-o-keyframes":
+                    {
+                        parsedText = ParseAtO_KeyframesRule(atRuleText, atrules, parseToEnd);
+                        break;
+                    }
+                case "@-moz-keyframes":
+                    {
+                        parsedText = ParseAtMoz_KeyframesRule(atRuleText, atrules, parseToEnd);
+                        break;
+                    }
+                case "@-webkit-keyframes":
+                    {
+                        parsedText = ParseAtWebkit_KeyframesRule(atRuleText, atrules, parseToEnd);
+                        break;
+                    }
+            }
+            return parsedText;
+        }
+
+        private int FindEndOfConditinonalGroupRule(int startIndex, string css_text)
+        {
             int endPoint = 0;
             bool isReached = true;
-
-
-            bool parseToEnd = true;
-            while (parseToEnd && (i = css_text.IndexOf("@media", i)) != -1)
+            var remainingText = css_text.Substring(startIndex);
+            int countOfNormalCurlyBraces = 0;
+            int countOfInverseCurlyBraces = 0;
+            for (int i = 0; i < remainingText.Length && isReached; i++ )
             {
-                int counter = 0;
-                while( ( (i + counter) <= css_text.Length ) && isReached  ) 
+                if (remainingText[i] == '{') countOfNormalCurlyBraces++;
+                if (remainingText[i] == '}') countOfInverseCurlyBraces++;
+                if (countOfInverseCurlyBraces != 0 && countOfNormalCurlyBraces != 0)
                 {
-                    var remainingText = css_text.Substring(i, counter );
-                    var countOfNormalCurlyBraces = remainingText.Where(x => x == '{').Count();
-                    var countOfInverseCurlyBraces = remainingText.Where(x => x == '}').Count();
-                    if (countOfInverseCurlyBraces != 0 && countOfNormalCurlyBraces != 0)
+                    if (countOfNormalCurlyBraces == countOfInverseCurlyBraces)
                     {
-                        if(countOfNormalCurlyBraces == countOfInverseCurlyBraces) 
-                        {
-                            endPoint = i + counter - 1;
-                            isReached = false;
-                            continue;
-                        }
-                    }
-                    counter++;
-                }
-                isReached = true;
-
-                var mediaRule = new AtMediaRule();
-                foreach(string atRuleType in AtRuleTypeExplicit.AtRuleTypeExplicitNames) 
-                {
-                    m = i;
-                    while ((l = css_text.IndexOf(atRuleType, i + "@media".Length, endPoint - i - "@media".Length + 1)) != -1)
-                    {
-                        var remainingText = css_text.Substring(i, l - i);
-                        var countOfNormalCurlyBraces = remainingText.Where(x => x == '{').Count();
-                        var countOfInverseCurlyBraces = remainingText.Where(x => x == '}').Count();
-                        if(countOfInverseCurlyBraces != countOfNormalCurlyBraces) 
-                        {
-                            switch (atRuleType)
-                            {
-                                case "@media":
-                                    {
-                                        var parsedText = ParseAtMediaRule(css_text.Substring(l), mediaRule.MediaSpecificAtrules, false);
-                                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
-                                        css_text = css_text.Substring(0, l) + parsedText;
-                                        break;
-                                    }
-                                case "@font-face":
-                                    {
-                                        var parsedText = ParseAtFont_FaceRule(css_text.Substring(l), mediaRule.MediaSpecificAtrules, false);
-                                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
-                                        css_text = css_text.Substring(0, l) + parsedText;
-                                        break;
-                                    }
-                                case "@page":
-                                    {
-                                        var parsedText = ParseAtPageRule(css_text.Substring(l), mediaRule.MediaSpecificAtrules, false);
-                                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
-                                        css_text = css_text.Substring(0, l) + parsedText;
-                                        break;
-                                    }
-                                case "@supports":
-                                    {
-                                        var parsedText = ParseAtSupportsRule(css_text.Substring(l), mediaRule.MediaSpecificAtrules, false);
-                                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
-                                        css_text = css_text.Substring(0, l) + parsedText;
-                                        break;
-                                    }
-                                case "@document":
-                                    {
-                                        var parsedText = ParseAtDocumentRule(css_text.Substring(l), mediaRule.MediaSpecificAtrules, false);
-                                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
-                                        css_text = css_text.Substring(0, l) + parsedText;
-                                        break;
-                                    }
-                                case "@keyframes":
-                                    {
-                                        var parsedText = ParseAtKeyframesRule(css_text.Substring(l), mediaRule.MediaSpecificAtrules, false);
-                                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
-                                        css_text = css_text.Substring(0, l) + parsedText;
-                                        break;
-                                    }
-                                case "@-moz-document":
-                                    {
-                                        var parsedText = ParseAtMoz_DocumentRule(css_text.Substring(l), mediaRule.MediaSpecificAtrules, false);
-                                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
-                                        css_text = css_text.Substring(0, l) + parsedText;
-                                        break;
-                                    }
-                                case "@-webkit-document":
-                                    {
-                                        var parsedText = ParseAtWebkit_DocumentRule(css_text.Substring(l), mediaRule.MediaSpecificAtrules, false);
-                                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
-                                        css_text = css_text.Substring(0, l) + parsedText;
-                                        break;
-                                    }
-                                case "@-o-keyframes":
-                                    {
-                                        var parsedText = ParseAtO_KeyframesRule(css_text.Substring(l), mediaRule.MediaSpecificAtrules, false);
-                                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
-                                        css_text = css_text.Substring(0, l) + parsedText;
-                                        break;
-                                    }
-                                case "@-moz-keyframes":
-                                    {
-                                        var parsedText = ParseAtMoz_KeyframesRule(css_text.Substring(l), mediaRule.MediaSpecificAtrules, false);
-                                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
-                                        css_text = css_text.Substring(0, l) + parsedText;
-                                        break;
-                                    }
-                                case "@-webkit-keyframes":
-                                    {
-                                        var parsedText = ParseAtWebkit_KeyframesRule(css_text.Substring(l), mediaRule.MediaSpecificAtrules, false);
-                                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
-                                        css_text = css_text.Substring(0, l) + parsedText;
-                                        break;
-                                    }
-                            }
-                        }
-                        m = l;
+                        endPoint = startIndex + i - 1;
+                        isReached = false;
                     }
                 }
-
-                parseToEnd = parseAll;
-                var mediaRule_Text = css_text.Substring(i, endPoint - i + 1);
-
-                
-                var mediaRule_TrimmedText = mediaRule_Text.Substring(0, mediaRule_Text.Length - 1);
-                mediaRule.MediaQueries = mediaRule_TrimmedText.Split('{')[0].Substring("@media".Length + 1);
-                //var mediaRule_RulesetsText = ParseAtRules(mediaRule_TrimmedText.Substring(mediaRule_TrimmedText.IndexOf("{", 0) + 1), mediaRule.MediaSpecificAtrules);
-                ParseRuleSets(mediaRule_TrimmedText.Substring(mediaRule_TrimmedText.IndexOf("{", 0) + 1), mediaRule.MediaSpecificRulesets);
-                MergeRulesets(mediaRule.MediaSpecificRulesets);
-                atrules.Add(mediaRule);
-
-                css_text = css_text.Replace(mediaRule_Text, "");
-                i = 0; j = 0; k = 0;
             }
-
-            return css_text;
+            return endPoint;
         }
+
+        
         private string ParseAtCharsetRule(string css_text, List<AtRule> atrules)
         {
             int i = 0;
             int j = 0;
-            int k = 0;
             while ((i = css_text.IndexOf("@charset", i)) != -1)
             {
                 j = css_text.IndexOf(";", i);
@@ -309,7 +261,6 @@ namespace CSSParser
         {
             int i = 0;
             int j = 0;
-            int k = 0;
             while ((i = css_text.IndexOf("@import", i)) != -1)
             {
                 j = css_text.IndexOf(";", i);
@@ -317,11 +268,16 @@ namespace CSSParser
 
                 var importRule = new AtImportRule();
                 var importRule_TrimmedText = importRule_Text.Substring(0, importRule_Text.Length - 1);
-                importRule.Url = importRule_TrimmedText.Split(' ')[1].Trim();
-                if (importRule_TrimmedText.Split(' ').Count() > 2)
+                if (importRule_TrimmedText.Contains(" "))
                 {
-                    importRule.ListOfMediaQueries = importRule_TrimmedText.Substring(importRule_TrimmedText.IndexOf(importRule.Url) + importRule.Url.Length + 1).Trim();
+                    importRule.Url = importRule_TrimmedText.Split(' ')[1].Trim();
+                    if (importRule_TrimmedText.Split(' ').Count() > 2)
+                    {
+                        importRule.ListOfMediaQueries = importRule_TrimmedText.Substring(importRule_TrimmedText.IndexOf(importRule.Url) + importRule.Url.Length + 1).Trim();
+                    }
                 }
+                else importRule.Url = importRule_TrimmedText.Substring("@import".Length - 1);
+                
                 atrules.Add(importRule);
 
 
@@ -334,7 +290,6 @@ namespace CSSParser
         {
             int i = 0;
             int j = 0;
-            int k = 0;
             while ((i = css_text.IndexOf("@namespace", i)) != -1)
             {
                 j = css_text.IndexOf(";", i);
@@ -359,7 +314,6 @@ namespace CSSParser
         {
             int i = 0;
             int j = 0;
-            int k = 0;
             bool parseToEnd = true;
             while (parseToEnd && (i = css_text.IndexOf("@font-face", i)) != -1)
             {
@@ -402,7 +356,6 @@ namespace CSSParser
         {
             int i = 0;
             int j = 0;
-            int k = 0;
             bool parseToEnd = true;
             while (parseToEnd && (i = css_text.IndexOf("@page", i)) != -1)
             {
@@ -441,33 +394,66 @@ namespace CSSParser
             }
             return css_text;
         }
+        private string ParseAtMediaRule(string css_text, List<AtRule> atrules, bool parseAll)
+        {
+            int i = 0;
+            int l = 0;
+            int endPoint = 0;
+            bool parseToEnd = true;
+            while (parseToEnd && (i = css_text.IndexOf("@media", i)) != -1)
+            {
+                endPoint = FindEndOfConditinonalGroupRule(i, css_text);
+                var mediaRule = new AtMediaRule();
+                foreach (string atRuleType in AtRuleTypeExplicit.AtRuleTypeExplicitNames)
+                {
+                    while ((l = css_text.IndexOf(atRuleType, i + "@media".Length, endPoint - i - "@media".Length + 1)) != -1)
+                    {
+                        var parsedText = ParseSpecificAtRule(atRuleType, css_text.Substring(l), mediaRule.MediaSpecificAtrules, false);
+                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
+                        css_text = css_text.Substring(0, l) + parsedText;
+                    }
+                }
+
+                parseToEnd = parseAll;
+                var mediaRule_Text = css_text.Substring(i, endPoint - i + 1);
+
+                var mediaRule_TrimmedText = mediaRule_Text.Substring(0, mediaRule_Text.Length - 1);
+                mediaRule.MediaQueries = mediaRule_TrimmedText.Split('{')[0].Substring("@media".Length + 1);
+                //var mediaRule_RulesetsText = ParseAtRules(mediaRule_TrimmedText.Substring(mediaRule_TrimmedText.IndexOf("{", 0) + 1), mediaRule.MediaSpecificAtrules);
+                ParseRuleSets(mediaRule_TrimmedText.Substring(mediaRule_TrimmedText.IndexOf("{", 0) + 1), mediaRule.MediaSpecificRulesets);
+                MergeRulesets(mediaRule.MediaSpecificRulesets);
+                atrules.Add(mediaRule);
+
+                css_text = css_text.Replace(mediaRule_Text, "");
+                i = 0;
+            }
+
+            return css_text;
+        }
+
         private string ParseAtSupportsRule(string css_text, List<AtRule> atrules, bool parseAll)
         {
             int i = 0;
-            int j = 0;
-            int k = 0;
+            int l = 0;
+            int endPoint = 0;
             bool parseToEnd = true;
-            while (parseToEnd && i <= (css_text.Length - 1) && ((i = css_text.IndexOf("@supports", i)) != -1))
+            while (parseToEnd && ((i = css_text.IndexOf("@supports", i)) != -1))
             {
-                j = i;
-                k = css_text.IndexOf("}", i);
-                bool isFound = true;
-                while (isFound)
-                {
-                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
-                    {
-                        isFound = false;
-                        j = k;
-                        continue;
-                    }
-                    j = k;
-                    k++;
-                    k = css_text.IndexOf("}", k);
-                }
-                parseToEnd = parseAll;
-                var supportsRule_Text = css_text.Substring(i, (j - i + 1));
-
+                endPoint = FindEndOfConditinonalGroupRule(i, css_text);
                 var supportsRule = new AtSupportsRule();
+                foreach (string atRuleType in AtRuleTypeExplicit.AtRuleTypeExplicitNames)
+                {
+                    while ((l = css_text.IndexOf(atRuleType, i + "@supports".Length, endPoint - i - "@supports".Length + 1)) != -1)
+                    {
+                        var parsedText = ParseSpecificAtRule(atRuleType, css_text.Substring(l), supportsRule.SupportSpecificAtrules, false);
+                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
+                        css_text = css_text.Substring(0, l) + parsedText;
+                    }
+                }
+
+                parseToEnd = parseAll;
+                var supportsRule_Text = css_text.Substring(i, endPoint - i + 1);
+
                 var supportsRule_TrimmedText = supportsRule_Text.Substring(0, supportsRule_Text.Length - 1);
                 supportsRule.Conditions = supportsRule_TrimmedText.Split('{')[0].Substring("@supports".Length + 1);
                 ParseRuleSets(supportsRule_TrimmedText.Substring(supportsRule_TrimmedText.IndexOf("{", 0) + 1), supportsRule.SupportSpecificRulesets);
@@ -475,149 +461,124 @@ namespace CSSParser
                 atrules.Add(supportsRule);
 
                 css_text = css_text.Replace(supportsRule_Text, "");
-                i = 0; j = 0; k = 0;
+                i = 0; 
             }
             return css_text;
         }
         private string ParseAtDocumentRule(string css_text, List<AtRule> atrules, bool parseAll)
         {
             int i = 0;
-            int j = 0;
-            int k = 0;
+            int l = 0;
+            int endPoint = 0;
             bool parseToEnd = true;
             while (parseToEnd && (i = css_text.IndexOf("@document", i)) != -1)
             {
-                j = i;
-                k = css_text.IndexOf("}", i);
-                bool isFound = true;
-                while (isFound)
-                {
-                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
-                    {
-                        isFound = false;
-                        j = k;
-                        continue;
-                    }
-                    j = k;
-                    k++;
-                    k = css_text.IndexOf("}", k);
-                }
-                parseToEnd = parseAll;
-                var documentRule_Text = css_text.Substring(i, (j - i + 1));
-
+                endPoint = FindEndOfConditinonalGroupRule(i, css_text);
                 var documentRule = new AtDocumentRule();
+                foreach (string atRuleType in AtRuleTypeExplicit.AtRuleTypeExplicitNames)
+                {
+                    while ((l = css_text.IndexOf(atRuleType, i + "@document".Length, endPoint - i - "@document".Length + 1)) != -1)
+                    {
+                        var parsedText = ParseSpecificAtRule(atRuleType, css_text.Substring(l), documentRule.DocumentSpecificAtrules, false);
+                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
+                        css_text = css_text.Substring(0, l) + parsedText;
+                    }
+                }
+
+                parseToEnd = parseAll;
+                var documentRule_Text = css_text.Substring(i, endPoint - i + 1);
+
                 var documentRule_TrimmedText = documentRule_Text.Substring(0, documentRule_Text.Length - 1);
                 documentRule.Identifier = documentRule_TrimmedText.Split('{')[0].Substring("@document".Length + 1);
-                ParseRuleSets(documentRule_TrimmedText.Substring(documentRule_TrimmedText.IndexOf("{", 0) + 1), documentRule.Rulesets);
-                MergeRulesets(documentRule.Rulesets);
+                ParseRuleSets(documentRule_TrimmedText.Substring(documentRule_TrimmedText.IndexOf("{", 0) + 1), documentRule.DocumentSpecificRulesets);
+                MergeRulesets(documentRule.DocumentSpecificRulesets);
                 atrules.Add(documentRule);
 
                 css_text = css_text.Replace(documentRule_Text, "");
-                i = 0; j = 0; k = 0;
+                i = 0;
             }
             return css_text;
         }
         private string ParseAtWebkit_DocumentRule(string css_text, List<AtRule> atrules, bool parseAll)
         {
             int i = 0;
-            int j = 0;
-            int k = 0;
+            int l = 0;
+            int endPoint = 0;
             bool parseToEnd = true;
             while (parseToEnd && (i = css_text.IndexOf("@-webkit-document", i)) != -1)
             {
-                j = i;
-                k = css_text.IndexOf("}", i);
-                bool isFound = true;
-                while (isFound)
-                {
-                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
-                    {
-                        isFound = false;
-                        j = k;
-                        continue;
-                    }
-                    j = k;
-                    k++;
-                    k = css_text.IndexOf("}", k);
-                }
-                parseToEnd = parseAll;
-                var webkit_documentRule_Text = css_text.Substring(i, (j - i + 1));
-
+                endPoint = FindEndOfConditinonalGroupRule(i, css_text);
                 var webkit_documentRule = new AtWebkit_DocumentRule();
+                foreach (string atRuleType in AtRuleTypeExplicit.AtRuleTypeExplicitNames)
+                {
+                    while ((l = css_text.IndexOf(atRuleType, i + "@-webkit-document".Length, endPoint - i - "@-webkit-document".Length + 1)) != -1)
+                    {
+                        var parsedText = ParseSpecificAtRule(atRuleType, css_text.Substring(l), webkit_documentRule.DocumentSpecificAtrules, false);
+                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
+                        css_text = css_text.Substring(0, l) + parsedText;
+                    }
+                }
+
+                parseToEnd = parseAll;
+                var webkit_documentRule_Text = css_text.Substring(i, endPoint - i + 1);
+
+
                 var webkit_documentRule_TrimmedText = webkit_documentRule_Text.Substring(0, webkit_documentRule_Text.Length - 1);
                 webkit_documentRule.Identifier = webkit_documentRule_TrimmedText.Split('{')[0].Substring("@-webkit-document".Length + 1);
-                ParseRuleSets(webkit_documentRule_TrimmedText.Substring(webkit_documentRule_TrimmedText.IndexOf("{", 0) + 1), webkit_documentRule.Rulesets);
-                MergeRulesets(webkit_documentRule.Rulesets);
+                ParseRuleSets(webkit_documentRule_TrimmedText.Substring(webkit_documentRule_TrimmedText.IndexOf("{", 0) + 1), webkit_documentRule.DocumentSpecificRulesets);
+                MergeRulesets(webkit_documentRule.DocumentSpecificRulesets);
                 atrules.Add(webkit_documentRule);
 
                 css_text = css_text.Replace(webkit_documentRule_Text, "");
-                i = 0; j = 0; k = 0;
+                i = 0; 
             }
             return css_text;
         }
         private string ParseAtMoz_DocumentRule(string css_text, List<AtRule> atrules, bool parseAll)
         {
             int i = 0;
-            int j = 0;
-            int k = 0;
+            int l = 0;
+            int endPoint = 0;
             bool parseToEnd = true;
             while (parseToEnd && (i = css_text.IndexOf("@-moz-document", i)) != -1)
             {
-                j = i;
-                k = css_text.IndexOf("}", i);
-                bool isFound = true;
-                while (isFound)
-                {
-                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
-                    {
-                        isFound = false;
-                        j = k;
-                        continue;
-                    }
-                    j = k;
-                    k++;
-                    k = css_text.IndexOf("}", k);
-                }
-                parseToEnd = parseAll;
-                var moz_documentRule_Text = css_text.Substring(i, (j - i + 1));
-
+                endPoint = FindEndOfConditinonalGroupRule(i, css_text);
                 var moz_documentRule = new AtMoz_DocumentRule();
+                foreach (string atRuleType in AtRuleTypeExplicit.AtRuleTypeExplicitNames)
+                {
+                    while ((l = css_text.IndexOf(atRuleType, i + "@-moz-document".Length, endPoint - i - "@-moz-document".Length + 1)) != -1)
+                    {
+                        var parsedText = ParseSpecificAtRule(atRuleType, css_text.Substring(l), moz_documentRule.DocumentSpecificAtrules, false);
+                        endPoint -= css_text.Length - css_text.Substring(0, l).Length - parsedText.Length;
+                        css_text = css_text.Substring(0, l) + parsedText;
+                    }
+                }
+
+                parseToEnd = parseAll;
+                var moz_documentRule_Text = css_text.Substring(i, endPoint - i + 1);
+
+
                 var moz_documentRule_TrimmedText = moz_documentRule_Text.Substring(0, moz_documentRule_Text.Length - 1);
                 moz_documentRule.Identifier = moz_documentRule_TrimmedText.Split('{')[0].Substring("@-moz-document".Length + 1);
-                ParseRuleSets(moz_documentRule_TrimmedText.Substring(moz_documentRule_TrimmedText.IndexOf("{", 0) + 1), moz_documentRule.Rulesets);
-                MergeRulesets(moz_documentRule.Rulesets);
+                ParseRuleSets(moz_documentRule_TrimmedText.Substring(moz_documentRule_TrimmedText.IndexOf("{", 0) + 1), moz_documentRule.DocumentSpesificRulesets);
+                MergeRulesets(moz_documentRule.DocumentSpesificRulesets);
                 atrules.Add(moz_documentRule);
 
                 css_text = css_text.Replace(moz_documentRule_Text, "");
-                i = 0; j = 0; k = 0;
+                i = 0;
             }
             return css_text;
         }
         private string ParseAtKeyframesRule(string css_text, List<AtRule> atrules, bool parseAll)
         {
             int i = 0;
-            int j = 0;
-            int k = 0;
+            int endPoint = 0;
             bool parseToEnd = true;
             while (parseToEnd && (i = css_text.IndexOf("@keyframes", i)) != -1)
             {
-                j = i;
-                k = css_text.IndexOf("}", i);
-                bool isFound = true;
-                while (isFound)
-                {
-                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
-                    {
-                        isFound = false;
-                        j = k;
-                        continue;
-                    }
-                    j = k;
-                    k++;
-                    k = css_text.IndexOf("}", k);
-                }
+                endPoint = FindEndOfConditinonalGroupRule(i, css_text);
                 parseToEnd = parseAll;
-                var keyframesRule_Text = css_text.Substring(i, (j - i + 1));
+                var keyframesRule_Text = css_text.Substring(i, (endPoint - i + 1));
 
                 var keyframesRule = new AtKeyframesRule();
                 var keyframesRule_TrimmedText = keyframesRule_Text.Substring(0, keyframesRule_Text.Length - 1);
@@ -627,35 +588,20 @@ namespace CSSParser
                 atrules.Add(keyframesRule);
 
                 css_text = css_text.Replace(keyframesRule_Text, "");
-                i = 0; j = 0; k = 0;
+                i = 0;
             }
             return css_text;
         }
         private string ParseAtO_KeyframesRule(string css_text, List<AtRule> atrules, bool parseAll)
         {
-            int i = 0;
-            int j = 0;
-            int k = 0;
+            int i = 0; 
+            int endPoint = 0;
             bool parseToEnd = true;
             while (parseToEnd && (i = css_text.IndexOf("@-o-keyframes", i)) != -1)
             {
-                j = i;
-                k = css_text.IndexOf("}", i);
-                bool isFound = true;
-                while (isFound)
-                {
-                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
-                    {
-                        isFound = false;
-                        j = k;
-                        continue;
-                    }
-                    j = k;
-                    k++;
-                    k = css_text.IndexOf("}", k);
-                }
+                endPoint = FindEndOfConditinonalGroupRule(i, css_text);
                 parseToEnd = parseAll;
-                var o_keyframesRule_Text = css_text.Substring(i, (j - i + 1));
+                var o_keyframesRule_Text = css_text.Substring(i, (endPoint - i + 1));
 
                 var o_keyframesRule = new AtO_KeyframesRule();
                 var o_keyframesRule_TrimmedText = o_keyframesRule_Text.Substring(0, o_keyframesRule_Text.Length - 1);
@@ -664,35 +610,20 @@ namespace CSSParser
                 //MergeRulesets(moz_keyframesRule.Rulesets);
                 atrules.Add(o_keyframesRule);
                 css_text = css_text.Replace(o_keyframesRule_Text, "");
-                i = 0; j = 0; k = 0;
+                i = 0; 
             }
             return css_text;
         }
         private string ParseAtMoz_KeyframesRule(string css_text, List<AtRule> atrules, bool parseAll)
         {
             int i = 0;
-            int j = 0;
-            int k = 0;
+            int endPoint = 0;
             bool parseToEnd = true;
             while (parseToEnd && (i = css_text.IndexOf("@-moz-keyframes", i)) != -1)
             {
-                j = i;
-                k = css_text.IndexOf("}", i);
-                bool isFound = true;
-                while (isFound)
-                {
-                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
-                    {
-                        isFound = false;
-                        j = k;
-                        continue;
-                    }
-                    j = k;
-                    k++;
-                    k = css_text.IndexOf("}", k);
-                }
+                endPoint = FindEndOfConditinonalGroupRule(i, css_text);
                 parseToEnd = parseAll;
-                var moz_keyframesRule_Text = css_text.Substring(i, (j - i + 1));
+                var moz_keyframesRule_Text = css_text.Substring(i, (endPoint - i + 1));
 
                 var moz_keyframesRule = new AtMoz_KeyframesRule();
                 var moz_keyframesRule_TrimmedText = moz_keyframesRule_Text.Substring(0, moz_keyframesRule_Text.Length - 1);
@@ -701,35 +632,20 @@ namespace CSSParser
                 //MergeRulesets(moz_keyframesRule.Rulesets);
                 atrules.Add(moz_keyframesRule);
                 css_text = css_text.Replace(moz_keyframesRule_Text, "");
-                i = 0; j = 0; k = 0;
+                i = 0; 
             }
             return css_text;
         }
         private string ParseAtWebkit_KeyframesRule(string css_text, List<AtRule> atrules, bool parseAll)
         {
             int i = 0;
-            int j = 0;
-            int k = 0;
+            int endPoint = 0;
             bool parseToEnd = true;
             while (parseToEnd && (i = css_text.IndexOf("@-webkit-keyframes", i)) != -1)
             {
-                j = i;
-                k = css_text.IndexOf("}", i);
-                bool isFound = true;
-                while (isFound)
-                {
-                    if (css_text.Substring(j + 1, k - j - 1).Trim() == "")
-                    {
-                        isFound = false;
-                        j = k;
-                        continue;
-                    }
-                    j = k;
-                    k++;
-                    k = css_text.IndexOf("}", k);
-                }
+                endPoint = FindEndOfConditinonalGroupRule(i, css_text);
                 parseToEnd = parseAll;
-                var webkit_keyframesRule_Text = css_text.Substring(i, (j - i + 1));
+                var webkit_keyframesRule_Text = css_text.Substring(i, (endPoint - i + 1));
 
                 var webkit_keyframesRule = new AtWebkit_KeyframesRule();
                 var webkit_keyframesRule_TrimmedText = webkit_keyframesRule_Text.Substring(0, webkit_keyframesRule_Text.Length - 1);
@@ -738,7 +654,7 @@ namespace CSSParser
                 //MergeRulesets(webkit_keyframesRule.Rulesets);
                 atrules.Add(webkit_keyframesRule);
                 css_text = css_text.Replace(webkit_keyframesRule_Text, "");
-                i = 0; j = 0; k = 0;
+                i = 0;
             }
             return css_text;
         }
@@ -747,25 +663,34 @@ namespace CSSParser
 
         private string ParseAtRules(string css_text, List<AtRule> atrules)
         {
-            
             #region @Rule Test Section
-            css_text = ParseAtMediaRule(css_text, atrules, true);
-            css_text = ParseAtCharsetRule(css_text, atrules);
-            css_text = ParseAtImportRule(css_text, atrules);
-            css_text = ParseAtNamespaceRule(css_text, atrules);
-            css_text = ParseAtFont_FaceRule(css_text, atrules, true);
-            css_text = ParseAtPageRule(css_text, atrules, true);
-            css_text = ParseAtSupportsRule(css_text, atrules, true);
-            css_text = ParseAtDocumentRule(css_text, atrules, true);
-            css_text = ParseAtWebkit_DocumentRule(css_text, atrules, true);
-            css_text = ParseAtMoz_DocumentRule(css_text, atrules, true);
-            css_text = ParseAtKeyframesRule(css_text, atrules, true);
-            css_text = ParseAtMoz_KeyframesRule(css_text, atrules, true);
-            css_text = ParseAtO_KeyframesRule(css_text, atrules, true);
-            css_text = ParseAtWebkit_KeyframesRule(css_text, atrules, true);
+
+            int i = 0;
+            string selectedAtRuleType = null;
+            while ( ((i = css_text.IndexOf("@")) != -1) )
+            {
+                foreach (string atRuleType in AtRuleTypeExplicit.AtRuleTypeExplicitNames)
+                {
+                    if (css_text.IndexOf(atRuleType, i, atRuleType.Length + 1) != -1)
+                    {
+                        selectedAtRuleType = atRuleType;
+                    }
+                }
+                if(selectedAtRuleType == null)
+                {
+                    css_text = css_text.Replace(css_text.Substring(i, FindEndOfConditinonalGroupRule(i, css_text) - i + 1), "");
+                }
+                else 
+                {
+                    var parsedText = ParseSpecificAtRule(selectedAtRuleType, css_text.Substring(i), atrules, false);
+                    css_text = css_text.Substring(0, i) + parsedText;
+                }
+                selectedAtRuleType = null;
+            }
+            
+            return css_text;
 
             #endregion
-            return css_text;
         }
         public string getTextfromFile(string filename)
         {

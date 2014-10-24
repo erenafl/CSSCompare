@@ -105,6 +105,8 @@
     <Compile Include="Property.cs" />
     <Compile Include="Ruleset.cs" />
     <Compile Include="Selector.cs" />
+    <Compile Include="StylesheetAnalyzer.cs" />
+    <Compile Include="StylesheetComparer.cs" />
     <Compile Include="Value.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

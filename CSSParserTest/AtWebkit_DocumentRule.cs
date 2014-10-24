@@ -8,17 +8,19 @@ namespace CSSParser
 {
     public class AtWebkit_DocumentRule : AtRule
     {
-        public List<Ruleset> Rulesets { get; set; }
+        public List<Ruleset> DocumentSpecificRulesets { get; set; }
+        public List<AtRule> DocumentSpecificAtrules { get; set; }
         public string Identifier { get; set; }
         public AtWebkit_DocumentRule()
         {
             RuleType = AtRuleType.Webkit_Document;
-            Rulesets = new List<Ruleset>();
+            DocumentSpecificRulesets = new List<Ruleset>();
+            DocumentSpecificAtrules = new List<AtRule>();
         }
         public override string OutAsString()
         {
             var XMLtext = "<" + "@-webkit-document " + Identifier + ">\n";
-            foreach (Ruleset rule in Rulesets)
+            foreach (Ruleset rule in DocumentSpecificRulesets)
             {
                 XMLtext += "     <" + rule.selector.value + ">\n";
                 foreach (Decleration dec in rule.declerations)

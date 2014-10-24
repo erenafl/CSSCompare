@@ -9,9 +9,10 @@ namespace CSSParser
     public static class AtRuleTypeExplicit
     {
         public static List<string> AtRuleTypeExplicitNames = new List<string> {
+            "@charset",
+            "@import",
+            "@namespace",
             "@media",
-            "@font-face", 
-            "@page",
             "@supports", 
             "@keyframes", 
             "@-moz-keyframes", 
@@ -19,7 +20,9 @@ namespace CSSParser
             "@-webkit-keyframes", 
             "@document", 
             "@-moz-document", 
-            "@-webkit-document" 
+            "@-webkit-document",
+            "@font-face", 
+            "@page"
             };
     }
 }

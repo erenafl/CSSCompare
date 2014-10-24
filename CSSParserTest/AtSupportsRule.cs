@@ -10,10 +10,12 @@ namespace CSSParser
     {
         public string Conditions;
         public List<Ruleset> SupportSpecificRulesets { get; set; }
+        public List<AtRule> SupportSpecificAtrules { get; set; }
         public AtSupportsRule()
         {
             RuleType = AtRuleType.Supports;
             SupportSpecificRulesets = new List<Ruleset>();
+            SupportSpecificAtrules = new List<AtRule>();
         }
         public override string OutAsString()
         {
