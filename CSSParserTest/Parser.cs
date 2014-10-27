@@ -29,15 +29,35 @@ namespace CSSParser
 		{
 			for(int i =0 ; i< rulesets.Count(); i++) 
 			{
-				var duplicates = rulesets.FindAll(a => a.selector.value == rulesets[i].selector.value).Where(a => a != rulesets[i]);
+				var duplicates = rulesets.FindAll(a => a.selector.value == rulesets[i].selector.value).Where(a => a != rulesets[i]).ToList();
 				foreach (Ruleset duplicate in duplicates)
 				{
-					foreach(Decleration dec in duplicate.declerations) 
-					{
-						rulesets[i].AddDecleration(dec);
-					}
+                    foreach (Decleration dec in duplicate.declerations)
+                    {
+                        rulesets[i].AddDecleration(dec);
+                    }   
 					rulesets.Remove(duplicate);
 				}
+                for (int j = 0; j < rulesets[i].declerations.Count(); j++) 
+                {
+                    /*
+                    if (rulesets[i].declerations.FindAll(x => x.property.value == rulesets[i].declerations[j].property.value).Where(x => x != rulesets[i].declerations[j]).Count() != 0)
+                    {
+                        rulesets[i].declerations.Remove(rulesets[i].declerations[j]);
+                    }
+                    */
+                    var duplicateDeclerations = rulesets[i].declerations.FindAll(x => x.property.value == rulesets[i].declerations[j].property.value).Where(x => x != rulesets[i].declerations[j]).ToList();
+                    if(duplicateDeclerations.Count() != 0) 
+                    {
+                        foreach(Decleration dec in duplicateDeclerations)
+                        {
+                            rulesets[i].declerations.Remove(dec);
+                        }
+                        
+                    }
+
+
+                }
 			}
 		}
 
@@ -87,7 +107,8 @@ namespace CSSParser
                                         if (decleration.Contains("url") && decleration.Contains("(") && !decleration.Contains(")"))
                                         {
                                             decleration += ";" + declerations[i + 1];
-                                            declerations.Remove(declerations[i + 1]);
+                                            //declerations.Remove(declerations[i + 1]);
+                                            i++;
                                             decleration = decleration.Trim();
                                         }
                                         
@@ -117,7 +138,8 @@ namespace CSSParser
                                 if (decleration.Contains("url") && decleration.Contains("(") && !decleration.Contains(")"))
                                 {
                                     decleration += ";" +  declerations[i + 1];
-                                    declerations.Remove(declerations[i + 1]);
+                                    //declerations.Remove(declerations[i + 1]);
+                                    i++;
                                     decleration = decleration.Trim();
                                 }
 
@@ -667,7 +689,8 @@ namespace CSSParser
 
             int i = 0;
             string selectedAtRuleType = null;
-            while ( ((i = css_text.IndexOf("@")) != -1) )
+            List<int> unrecognized = new List<int>();
+            while ( ((i = css_text.IndexOf("@")) != -1) && unrecognized.Contains(i) )
             {
                 foreach (string atRuleType in AtRuleTypeExplicit.AtRuleTypeExplicitNames)
                 {
@@ -678,7 +701,13 @@ namespace CSSParser
                 }
                 if(selectedAtRuleType == null)
                 {
-                    css_text = css_text.Replace(css_text.Substring(i, FindEndOfConditinonalGroupRule(i, css_text) - i + 1), "");
+                    //Unrecognized at rules
+                    if ( i == 0 || ( css_text[i - 1] == '}' || css_text[i - 1] == ' ' ) )
+                    {
+                        css_text = css_text.Replace(css_text.Substring(i, FindEndOfConditinonalGroupRule(i, css_text) - i + 1), "");
+                    }
+                    //Unrecognized '@' characters(not an atrule)
+                    else unrecognized.Add(i);
                 }
                 else 
                 {

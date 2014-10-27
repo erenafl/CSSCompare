@@ -173,20 +173,6 @@ namespace CSSTest
                             RuleName = "@supports";
                             AtSupportsRule asr = (AtSupportsRule)atrule;
                             TreeNode parent = new TreeNode(RuleName + " " + asr.Conditions);
-                            /*
-                            foreach (Ruleset rule in asr.SupportSpecificRulesets)
-                            {
-                                TreeNode child = new TreeNode(rule.selector.value);
-                                foreach (Decleration dec in rule.declerations)
-                                {
-                                    TreeNode grandchild = new TreeNode(dec.property.value);
-                                    grandchild.Nodes.Add(new TreeNode(dec.value.value));
-                                    child.Nodes.Add(grandchild);
-                                }
-                                parent.Nodes.Add(child);
-                            }
-                            tv.Nodes.Add(parent);
-                             */
                             var tv2 = new TreeView();
                             var tv3 = new TreeView();
                             FillAtRules(tv2, asr.SupportSpecificAtrules);
@@ -195,6 +181,66 @@ namespace CSSTest
                                 parent.Nodes.Add((TreeNode)node.Clone());
                             }
                             FillRuleSets(tv3, asr.SupportSpecificRulesets);
+                            foreach (TreeNode node in tv3.Nodes)
+                            {
+                                parent.Nodes.Add((TreeNode)node.Clone());
+                            }
+                            tv.Nodes.Add(parent);
+                            break;
+                        }
+                    case AtRuleType.Document:
+                        {
+                            RuleName = "@document";
+                            AtDocumentRule adr = (AtDocumentRule)atrule;
+                            TreeNode parent = new TreeNode(RuleName + " " + adr.Identifier);
+                            var tv2 = new TreeView();
+                            var tv3 = new TreeView();
+                            FillAtRules(tv2, adr.DocumentSpecificAtrules);
+                            foreach (TreeNode node in tv2.Nodes)
+                            {
+                                parent.Nodes.Add((TreeNode)node.Clone());
+                            }
+                            FillRuleSets(tv3, adr.DocumentSpecificRulesets);
+                            foreach (TreeNode node in tv3.Nodes)
+                            {
+                                parent.Nodes.Add((TreeNode)node.Clone());
+                            }
+                            tv.Nodes.Add(parent);
+                            break;
+                        }
+                    case AtRuleType.Moz_Document:
+                        {
+                            RuleName = "@-moz-document";
+                            AtMoz_DocumentRule amdr = (AtMoz_DocumentRule)atrule;
+                            TreeNode parent = new TreeNode(RuleName + " " + amdr.Identifier);
+                            var tv2 = new TreeView();
+                            var tv3 = new TreeView();
+                            FillAtRules(tv2, amdr.DocumentSpecificAtrules);
+                            foreach (TreeNode node in tv2.Nodes)
+                            {
+                                parent.Nodes.Add((TreeNode)node.Clone());
+                            }
+                            FillRuleSets(tv3, amdr.DocumentSpesificRulesets);
+                            foreach (TreeNode node in tv3.Nodes)
+                            {
+                                parent.Nodes.Add((TreeNode)node.Clone());
+                            }
+                            tv.Nodes.Add(parent);
+                            break;
+                        }
+                    case AtRuleType.Webkit_Document:
+                        {
+                            RuleName = "@-webkit-document";
+                            AtWebkit_DocumentRule awdr = (AtWebkit_DocumentRule)atrule;
+                            TreeNode parent = new TreeNode(RuleName + " " + awdr.Identifier);
+                            var tv2 = new TreeView();
+                            var tv3 = new TreeView();
+                            FillAtRules(tv2, awdr.DocumentSpecificAtrules);
+                            foreach (TreeNode node in tv2.Nodes)
+                            {
+                                parent.Nodes.Add((TreeNode)node.Clone());
+                            }
+                            FillRuleSets(tv3, awdr.DocumentSpecificRulesets);
                             foreach (TreeNode node in tv3.Nodes)
                             {
                                 parent.Nodes.Add((TreeNode)node.Clone());
@@ -278,63 +324,7 @@ namespace CSSTest
                             tv.Nodes.Add(parent);
                             break;
                         }
-                    case AtRuleType.Document:
-                        {
-                            RuleName = "@document";
-                            AtDocumentRule adr = (AtDocumentRule)atrule;
-                            TreeNode parent = new TreeNode(RuleName + " " + adr.Identifier);
-                            foreach (Ruleset rule in adr.DocumentSpecificRulesets)
-                            {
-                                TreeNode child = new TreeNode(rule.selector.value);
-                                foreach (Decleration dec in rule.declerations)
-                                {
-                                    TreeNode grandchild = new TreeNode(dec.property.value);
-                                    grandchild.Nodes.Add(new TreeNode(dec.value.value));
-                                    child.Nodes.Add(grandchild);
-                                }
-                                parent.Nodes.Add(child);
-                            }
-                            tv.Nodes.Add(parent);
-                            break;
-                        }
-                    case AtRuleType.Moz_Document:
-                        {
-                            RuleName = "@-moz-document";
-                            AtMoz_DocumentRule amdr = (AtMoz_DocumentRule)atrule;
-                            TreeNode parent = new TreeNode(RuleName + " " + amdr.Identifier);
-                            foreach (Ruleset rule in amdr.DocumentSpesificRulesets)
-                            {
-                                TreeNode child = new TreeNode(rule.selector.value);
-                                foreach (Decleration dec in rule.declerations)
-                                {
-                                    TreeNode grandchild = new TreeNode(dec.property.value);
-                                    grandchild.Nodes.Add(new TreeNode(dec.value.value));
-                                    child.Nodes.Add(grandchild);
-                                }
-                                parent.Nodes.Add(child);
-                            }
-                            tv.Nodes.Add(parent);
-                            break;
-                        }
-                    case AtRuleType.Webkit_Document:
-                        {
-                            RuleName = "@-webkit-document";
-                            AtWebkit_DocumentRule awdr = (AtWebkit_DocumentRule)atrule;
-                            TreeNode parent = new TreeNode(RuleName + " " + awdr.Identifier);
-                            foreach (Ruleset rule in awdr.DocumentSpecificRulesets)
-                            {
-                                TreeNode child = new TreeNode(rule.selector.value);
-                                foreach (Decleration dec in rule.declerations)
-                                {
-                                    TreeNode grandchild = new TreeNode(dec.property.value);
-                                    grandchild.Nodes.Add(new TreeNode(dec.value.value));
-                                    child.Nodes.Add(grandchild);
-                                }
-                                parent.Nodes.Add(child);
-                            }
-                            tv.Nodes.Add(parent);
-                            break;
-                        }
+                    
                 }
                     
                 
