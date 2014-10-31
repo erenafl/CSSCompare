@@ -11,15 +11,17 @@ namespace CSSParser
         public List<Ruleset> DocumentSpecificRulesets { get; set; }
         public List<AtRule> DocumentSpecificAtrules { get; set; }
         public string Identifier { get; set; }
-        public AtDocumentRule()
+        public string BrowserPrefix { get; private set; }
+        public AtDocumentRule(string browserPrefix)
         {
             RuleType = AtRuleType.Document;
             DocumentSpecificRulesets = new List<Ruleset>();
             DocumentSpecificAtrules = new List<AtRule>();
+            BrowserPrefix = browserPrefix;
         }
         public override string OutAsString()
         {
-            var XMLtext = "<" + "@document " + Identifier + ">\n";
+            var XMLtext = "<" + "@" + BrowserPrefix + "document " + Identifier + ">\n";
             foreach (Ruleset rule in DocumentSpecificRulesets)
             {
                 XMLtext += "     <" + rule.selector.value + ">\n";
@@ -31,7 +33,7 @@ namespace CSSParser
                 }
                 XMLtext += "     </" + rule.selector.value + ">\n";
             }
-            XMLtext += "</" + "@document " + Identifier + ">\n";
+            XMLtext += "</" + "@" + BrowserPrefix + "document " + Identifier + ">\n";
             return XMLtext;
         }
     }

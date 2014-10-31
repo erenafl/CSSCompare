@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSSParser
 {
-    public enum AddFont_FaceRuleDescriptors
+    public enum AtFont_FaceRuleDescriptors
     {
 
     }

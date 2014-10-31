@@ -10,14 +10,16 @@ namespace CSSParser
     {
         public List<Ruleset> Rulesets { get; set; }
         public string Identifier { get; set; }
-        public AtKeyframesRule() 
+        public string BrowserPrefix { get; private set; }
+        public AtKeyframesRule(string browserPrefix) 
         {
             RuleType = AtRuleType.Keyframes;
             Rulesets = new List<Ruleset>();
+            BrowserPrefix = browserPrefix;
         }
         public override string OutAsString()
         {
-            var XMLtext = "<" + "@keyframes " + Identifier + ">\n";
+            var XMLtext = "<" + "@" + BrowserPrefix + "keyframes" + Identifier + ">\n";
             foreach (Ruleset rule in Rulesets)
             {
                 XMLtext += "     <" + rule.selector.value + ">\n";
@@ -29,7 +31,7 @@ namespace CSSParser
                 }
                 XMLtext += "     </" + rule.selector.value + ">\n";
             }
-            XMLtext += "</" + "@keyframes " + Identifier + ">\n";
+            XMLtext += "</" + "@" + BrowserPrefix + "keyframes" + Identifier + ">\n";
             return XMLtext;
         }
     }

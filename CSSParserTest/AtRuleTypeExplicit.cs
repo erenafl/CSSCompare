@@ -18,9 +18,17 @@ namespace CSSParser
             "@-moz-keyframes", 
             "@-o-keyframes", 
             "@-webkit-keyframes", 
+            "@-ms-keyframes", 
             "@document", 
             "@-moz-document", 
+            "@-o-document", 
             "@-webkit-document",
+            "@-ms-document",
+            "@viewport",
+            "@-moz-viewport",
+            "@-o-viewport",
+            "@-webkit-viewport",
+            "@-ms-viewport",
             "@font-face", 
             "@page"
             };
