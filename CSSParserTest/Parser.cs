@@ -442,7 +442,11 @@ namespace CSSParser
             var pageRule_Text = css_text.Substring(i, (j - i + 1));
             var pageRule = new AtPageRule();
             var pageRule_TrimmedText = pageRule_Text.Substring(0, pageRule_Text.Length - 1);
-            pageRule.PseudoClass = pageRule_TrimmedText.Split('{')[0].Substring("@page".Length + 1);
+            if (pageRule_TrimmedText.Split('{')[0].TrimEnd().Length > "@page".Length)
+            {
+                pageRule.PseudoClass = pageRule_TrimmedText.Split('{')[0].Substring("@page".Length).Trim();
+            }
+            else pageRule.PseudoClass = "";
 
             List<string> declerations = pageRule_TrimmedText.Split('{')[1].Split(';').ToList();
             foreach (string decleration_raw in declerations)
