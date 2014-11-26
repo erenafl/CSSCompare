@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +14,19 @@ namespace CSSTest
 {
     public partial class MainScreen : Form
     {
+        private Searcher searcher;
         private CSSDocument css;
         private TextInput ti;
         private CompareFilesScreen cfs;
         private CompareTextsScreen cts;
+        private int LastResultIndex;
+        private List<int> SearchResultIndexes;
         public MainScreen()
         {
             InitializeComponent();
+            SearchResultIndexes = new List<int>();
+            LastResultIndex = 0;
+            searcher = new Searcher();
         }
 
         private void parseFromFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -262,6 +269,105 @@ namespace CSSTest
             cts.Show();
         }
 
+        private void Search_button_Click(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(SearchQuery_textBox.Text.Trim()))
+            {
+                SearchResultIndexes = searcher.FindInTreeView(SearchQuery_textBox.Text, parsedCSSTreeView);
+                LastResultIndex = 0;
+                if(SearchResultIndexes.Count != 0)
+                {
+                    NextResult_button.Enabled = true;
+                    Cancel_button.Enabled = true;
+                    HighLightResults();
+                }
+            }
+        }
 
+        private void NextResult_button_Click(object sender, EventArgs e)
+        {
+            ShowNextParticularResult();
+        }
+
+        private void Cancel_button_Click(object sender, EventArgs e)
+        {
+            NextResult_button.Enabled = false;
+            Cancel_button.Enabled = false;
+            RemoveHighLights();
+        }
+
+        private void SearchQuery_textBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(SearchQuery_textBox.Text.Trim()))
+            {
+                Search_button.Enabled = true;
+            }
+            else Search_button.Enabled = false;
+        }
+
+        private void MainScreen_SizeChanged(object sender, EventArgs e)
+        {
+            Search_panel.Left = this.Width - Search_panel.Width - 34;
+        }
+
+        private void HighLightResults()
+        {
+            foreach(var index in SearchResultIndexes)
+            {
+                parsedCSSTreeView.Nodes[index].ForeColor = Color.Orange;
+            }
+        }
+        private void ShowNextParticularResult()
+        {
+            if (LastResultIndex != 0)
+            {
+                parsedCSSTreeView.Nodes[SearchResultIndexes.ElementAt(LastResultIndex - 1)].ForeColor = Color.Orange;
+            }
+            if (LastResultIndex == SearchResultIndexes.Count) LastResultIndex = 0;
+            parsedCSSTreeView.Nodes[SearchResultIndexes.ElementAt(LastResultIndex)].ForeColor = Color.Gray;
+            parsedCSSTreeView.Nodes[SearchResultIndexes.ElementAt(LastResultIndex)].EnsureVisible();
+            LastResultIndex++;
+        }
+        private void RemoveHighLights()
+        {
+            foreach (var index in SearchResultIndexes)
+            {
+                parsedCSSTreeView.Nodes[index].ForeColor = Color.Black;
+            }
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.F))
+            {
+                Search_panel.Visible = true;
+            }
+            if (keyData == (Keys.Enter))
+            {
+                if(Search_button.Enabled)
+                {
+                    if (!String.IsNullOrEmpty(SearchQuery_textBox.Text.Trim()))
+                    {
+                        SearchResultIndexes = searcher.FindInTreeView(SearchQuery_textBox.Text, parsedCSSTreeView);
+                        LastResultIndex = 0;
+                        if (SearchResultIndexes.Count != 0)
+                        {
+                            NextResult_button.Enabled = true;
+                            Cancel_button.Enabled = true;
+                            HighLightResults();
+                        }
+                    }
+                }
+            }
+            if (keyData == (Keys.Right))
+            {
+                ShowNextParticularResult();
+            }
+            if (keyData == (Keys.Escape))
+            {
+                RemoveHighLights();
+                Search_panel.Visible = false;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
 }

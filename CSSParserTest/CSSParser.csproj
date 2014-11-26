@@ -76,6 +76,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AtFont_FaceRuleDescriptors.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Property.cs" />
     <Compile Include="Ruleset.cs" />
     <Compile Include="RulesetAnalyzer.cs" />
+    <Compile Include="Searcher.cs" />
     <Compile Include="Selector.cs" />
     <Compile Include="StylesheetAnalyzer.cs" />
     <Compile Include="StylesheetComparer.cs" />
