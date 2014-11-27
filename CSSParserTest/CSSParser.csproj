@@ -68,6 +68,7 @@
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.IO.Log" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -96,6 +97,7 @@
     <Compile Include="AtViewportRule.cs" />
     <Compile Include="CSSDocument.cs" />
     <Compile Include="Decleration.cs" />
+    <Compile Include="DiffMatchPatch.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="IStatement.cs" />
     <Compile Include="Parser.cs" />
@@ -118,6 +120,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="ClassDiagram3.cd" />
     <None Include="CSSParserTest_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -33,6 +33,7 @@
             this.ChooseCSSFilestextBox1 = new System.Windows.Forms.TextBox();
             this.ChooseCSSFilestextBox2 = new System.Windows.Forms.TextBox();
             this.compareCSSFiles = new System.Windows.Forms.Button();
+            this.diffCSSFiles = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // chooseCSSFiles_1
@@ -82,11 +83,23 @@
             this.compareCSSFiles.UseVisualStyleBackColor = true;
             this.compareCSSFiles.Click += new System.EventHandler(this.compareCSSFiles_Click);
             // 
+            // diffCSSFiles
+            // 
+            this.diffCSSFiles.Enabled = false;
+            this.diffCSSFiles.Location = new System.Drawing.Point(116, 161);
+            this.diffCSSFiles.Name = "diffCSSFiles";
+            this.diffCSSFiles.Size = new System.Drawing.Size(103, 23);
+            this.diffCSSFiles.TabIndex = 5;
+            this.diffCSSFiles.Text = "Diff";
+            this.diffCSSFiles.UseVisualStyleBackColor = true;
+            this.diffCSSFiles.Click += new System.EventHandler(this.diffCSSFiles_Click);
+            // 
             // CompareFilesScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(319, 318);
+            this.Controls.Add(this.diffCSSFiles);
             this.Controls.Add(this.compareCSSFiles);
             this.Controls.Add(this.ChooseCSSFilestextBox2);
             this.Controls.Add(this.ChooseCSSFilestextBox1);
@@ -106,5 +119,6 @@
         private System.Windows.Forms.TextBox ChooseCSSFilestextBox1;
         private System.Windows.Forms.TextBox ChooseCSSFilestextBox2;
         private System.Windows.Forms.Button compareCSSFiles;
+        private System.Windows.Forms.Button diffCSSFiles;
     }
 }

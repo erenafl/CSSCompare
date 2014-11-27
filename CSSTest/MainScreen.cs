@@ -324,7 +324,7 @@ namespace CSSTest
                 parsedCSSTreeView.Nodes[SearchResultIndexes.ElementAt(LastResultIndex - 1)].ForeColor = Color.Orange;
             }
             if (LastResultIndex == SearchResultIndexes.Count) LastResultIndex = 0;
-            parsedCSSTreeView.Nodes[SearchResultIndexes.ElementAt(LastResultIndex)].ForeColor = Color.Gray;
+            parsedCSSTreeView.Nodes[SearchResultIndexes.ElementAt(LastResultIndex)].ForeColor = Color.Blue;
             parsedCSSTreeView.Nodes[SearchResultIndexes.ElementAt(LastResultIndex)].EnsureVisible();
             LastResultIndex++;
         }

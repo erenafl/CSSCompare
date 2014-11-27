@@ -13,6 +13,8 @@ namespace CSSTest
 {
     public partial class CompareFilesScreen : Form
     {
+        private diff_match_patch diffOperator;
+        private DiffResultScreen drs;
         private ResultScreen rs;
         private CSSDocument css1;
         private CSSDocument css2;
@@ -25,6 +27,7 @@ namespace CSSTest
             css1 = new CSSDocument();
             css2 = new CSSDocument();
             parser = new Parser();
+            diffOperator = new diff_match_patch();
         }
 
         private void chooseCSSFiles_1_Click(object sender, EventArgs e)
@@ -33,7 +36,11 @@ namespace CSSTest
             ofd.Filter = "CSS files|*.css";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                if (!String.IsNullOrEmpty(ChooseCSSFilestextBox2.Text.Trim())) compareCSSFiles.Enabled = true;
+                if (!String.IsNullOrEmpty(ChooseCSSFilestextBox1.Text.Trim()))
+                {
+                    compareCSSFiles.Enabled = true;
+                    diffCSSFiles.Enabled = true;
+                }
                 ChooseCSSFilestextBox1.Text = ofd.FileName;
                 filename1 = ofd.FileName;
             }
@@ -45,7 +52,11 @@ namespace CSSTest
             ofd.Filter = "CSS files|*.css";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                if (!String.IsNullOrEmpty(ChooseCSSFilestextBox1.Text.Trim())) compareCSSFiles.Enabled = true;
+                if (!String.IsNullOrEmpty(ChooseCSSFilestextBox1.Text.Trim()))
+                {
+                    compareCSSFiles.Enabled = true;
+                    diffCSSFiles.Enabled = true;
+                }
                 ChooseCSSFilestextBox2.Text = ofd.FileName;
                 filename2 = ofd.FileName;
             }
@@ -61,6 +72,12 @@ namespace CSSTest
 
             rs = new ResultScreen(css1, css2);
             rs.Show();
+        }
+
+        private void diffCSSFiles_Click(object sender, EventArgs e)
+        {
+            drs = new DiffResultScreen(parser.getTextfromFile(filename1), parser.getTextfromFile(filename2));
+            drs.Show();
         }
     }
 }

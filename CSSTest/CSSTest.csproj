@@ -56,6 +56,12 @@
     <Compile Include="CompareTextsScreen.Designer.cs">
       <DependentUpon>CompareTextsScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="DiffResultScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DiffResultScreen.Designer.cs">
+      <DependentUpon>DiffResultScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +87,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CompareTextsScreen.resx">
       <DependentUpon>CompareTextsScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DiffResultScreen.resx">
+      <DependentUpon>DiffResultScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainScreen.resx">
       <DependentUpon>MainScreen.cs</DependentUpon>
