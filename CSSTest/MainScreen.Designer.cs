@@ -40,10 +40,10 @@
             this.errorText = new System.Windows.Forms.RichTextBox();
             this.parsedCSSTreeView = new System.Windows.Forms.TreeView();
             this.Search_panel = new System.Windows.Forms.Panel();
-            this.SearchQuery_textBox = new System.Windows.Forms.TextBox();
             this.Cancel_button = new System.Windows.Forms.Button();
             this.NextResult_button = new System.Windows.Forms.Button();
             this.Search_button = new System.Windows.Forms.Button();
+            this.SearchQuery_textBox = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.Search_panel.SuspendLayout();
             this.SuspendLayout();
@@ -118,7 +118,7 @@
             // 
             this.saveAsToolStripMenuItem.Enabled = false;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.saveAsToolStripMenuItem.Text = "Save As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -149,19 +149,12 @@
             this.Search_panel.Controls.Add(this.NextResult_button);
             this.Search_panel.Controls.Add(this.Search_button);
             this.Search_panel.Controls.Add(this.SearchQuery_textBox);
+            this.Search_panel.Enabled = false;
             this.Search_panel.Location = new System.Drawing.Point(216, 24);
             this.Search_panel.Name = "Search_panel";
             this.Search_panel.Size = new System.Drawing.Size(173, 34);
             this.Search_panel.TabIndex = 4;
             this.Search_panel.Visible = false;
-            // 
-            // SearchQuery_textBox
-            // 
-            this.SearchQuery_textBox.Location = new System.Drawing.Point(3, 11);
-            this.SearchQuery_textBox.Name = "SearchQuery_textBox";
-            this.SearchQuery_textBox.Size = new System.Drawing.Size(78, 20);
-            this.SearchQuery_textBox.TabIndex = 0;
-            this.SearchQuery_textBox.TextChanged += new System.EventHandler(this.SearchQuery_textBox_TextChanged);
             // 
             // Cancel_button
             // 
@@ -195,6 +188,14 @@
             this.Search_button.TabIndex = 1;
             this.Search_button.UseVisualStyleBackColor = true;
             this.Search_button.Click += new System.EventHandler(this.Search_button_Click);
+            // 
+            // SearchQuery_textBox
+            // 
+            this.SearchQuery_textBox.Location = new System.Drawing.Point(3, 11);
+            this.SearchQuery_textBox.Name = "SearchQuery_textBox";
+            this.SearchQuery_textBox.Size = new System.Drawing.Size(78, 20);
+            this.SearchQuery_textBox.TabIndex = 0;
+            this.SearchQuery_textBox.TextChanged += new System.EventHandler(this.SearchQuery_textBox_TextChanged);
             // 
             // MainScreen
             // 

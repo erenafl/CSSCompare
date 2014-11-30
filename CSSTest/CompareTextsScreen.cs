@@ -13,6 +13,8 @@ namespace CSSTest
 {
     public partial class CompareTextsScreen : Form
     {
+        private diff_match_patch diffOperator;
+        private DiffResultScreen drs;
         private ResultScreen rs;
         private CSSDocument css1;
         private CSSDocument css2;
@@ -23,6 +25,7 @@ namespace CSSTest
             css1 = new CSSDocument();
             css2 = new CSSDocument();
             parser = new Parser();
+            diffOperator = new diff_match_patch();
         }
 
         private void compareCSSTexts_Click(object sender, EventArgs e)
@@ -38,8 +41,13 @@ namespace CSSTest
             if ((!String.IsNullOrEmpty(CompareCSSTextstextBox2.Text.Trim())) && (!String.IsNullOrEmpty(CompareCSSTextstextBox1.Text.Trim())))
             {
                 compareCSSTexts.Enabled = true;
+                diffCSSFiles.Enabled = true;
             }
-            else compareCSSTexts.Enabled = false;
+            else
+            {
+                compareCSSTexts.Enabled = false;
+                diffCSSFiles.Enabled = false;
+            }
 
         }
 
@@ -48,8 +56,13 @@ namespace CSSTest
             if ((!String.IsNullOrEmpty(CompareCSSTextstextBox2.Text.Trim())) && (!String.IsNullOrEmpty(CompareCSSTextstextBox1.Text.Trim())))
             {
                 compareCSSTexts.Enabled = true;
+                diffCSSFiles.Enabled = true;
             }
-            else compareCSSTexts.Enabled = false;
+            else
+            {
+                compareCSSTexts.Enabled = false;
+                diffCSSFiles.Enabled = false;
+            }
         }
 
         private void CompareTextsScreen_SizeChanged(object sender, EventArgs e)
@@ -60,7 +73,15 @@ namespace CSSTest
 
             CompareCSSTextLabel_1.Left= this.Width / 4 - 6;
             CompareCSSTextLabel_2.Left = this.Width / 2 + this.Width / 4 - 6;
+
+            compareCSSTexts.Left = this.Width / 4 - 6;
+            diffCSSFiles.Left = this.Width / 2 + this.Width / 4 - 6;
         }
 
+        private void diffCSSFiles_Click(object sender, EventArgs e)
+        {
+            drs = new DiffResultScreen(CompareCSSTextstextBox1.Text, CompareCSSTextstextBox2.Text);
+            drs.Show();
+        }
     }
 }

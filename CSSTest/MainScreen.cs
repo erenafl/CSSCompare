@@ -41,7 +41,11 @@ namespace CSSTest
                 css = parser.ParseText(raw_text);
                 parsedCSSTreeView.Nodes.Clear();
                 FillTree(parsedCSSTreeView);
-                if (parsedCSSTreeView.Nodes.Count != 0) saveAsToolStripMenuItem.Enabled = true;
+                if (parsedCSSTreeView.Nodes.Count != 0)
+                {
+                    saveAsToolStripMenuItem.Enabled = true;
+                    Search_panel.Enabled = true;
+                }
             }
             
         }
@@ -314,17 +318,17 @@ namespace CSSTest
         {
             foreach(var index in SearchResultIndexes)
             {
-                parsedCSSTreeView.Nodes[index].ForeColor = Color.Orange;
+                parsedCSSTreeView.Nodes[index].BackColor = Color.LightBlue;
             }
         }
         private void ShowNextParticularResult()
         {
             if (LastResultIndex != 0)
             {
-                parsedCSSTreeView.Nodes[SearchResultIndexes.ElementAt(LastResultIndex - 1)].ForeColor = Color.Orange;
+                parsedCSSTreeView.Nodes[SearchResultIndexes.ElementAt(LastResultIndex - 1)].BackColor = Color.LightBlue;
             }
             if (LastResultIndex == SearchResultIndexes.Count) LastResultIndex = 0;
-            parsedCSSTreeView.Nodes[SearchResultIndexes.ElementAt(LastResultIndex)].ForeColor = Color.Blue;
+            parsedCSSTreeView.Nodes[SearchResultIndexes.ElementAt(LastResultIndex)].BackColor = Color.Orange;
             parsedCSSTreeView.Nodes[SearchResultIndexes.ElementAt(LastResultIndex)].EnsureVisible();
             LastResultIndex++;
         }
@@ -332,7 +336,7 @@ namespace CSSTest
         {
             foreach (var index in SearchResultIndexes)
             {
-                parsedCSSTreeView.Nodes[index].ForeColor = Color.Black;
+                parsedCSSTreeView.Nodes[index].BackColor = Color.Transparent;
             }
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -360,12 +364,17 @@ namespace CSSTest
             }
             if (keyData == (Keys.Right))
             {
-                ShowNextParticularResult();
+                if (NextResult_button.Enabled)
+                {
+                    ShowNextParticularResult(); 
+                }
             }
             if (keyData == (Keys.Escape))
             {
                 RemoveHighLights();
                 Search_panel.Visible = false;
+                NextResult_button.Enabled = false;
+                Cancel_button.Enabled = false;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }

@@ -23,15 +23,20 @@ namespace CSSTest
         }
         private void VisualizeDiff(List<Diff> diffs)
         {
+            int previousLength = 0;
+            int currentLength = 0;
             foreach(var diff in diffs )
             {
+                previousLength = DiffResult_richTextBox1.TextLength;
                 Color color = new Color();
                 if (diff.operation == Operation.EQUAL) color = Color.White;
                 if (diff.operation == Operation.INSERT) color = Color.LightGreen;
-                if (diff.operation == Operation.EQUAL) color = Color.LightPink;
-                DiffResult_richTextBox1.SelectionBackColor = color;
+                if (diff.operation == Operation.DELETE) color = Color.LightPink;
                 DiffResult_richTextBox1.AppendText(diff.text);
-                DiffResult_richTextBox1.AppendText("\n");
+                currentLength = DiffResult_richTextBox1.TextLength;
+                DiffResult_richTextBox1.Select(previousLength, currentLength - previousLength + 1);
+                DiffResult_richTextBox1.SelectionBackColor = color;
+                //DiffResult_richTextBox1.AppendText("\n");
             }
         }
     }

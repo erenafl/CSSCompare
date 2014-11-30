@@ -33,6 +33,7 @@
             this.CompareCSSTextLabel_1 = new System.Windows.Forms.Label();
             this.CompareCSSTextLabel_2 = new System.Windows.Forms.Label();
             this.compareCSSTexts = new System.Windows.Forms.Button();
+            this.diffCSSFiles = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // CompareCSSTextstextBox1
@@ -83,9 +84,9 @@
             // 
             // compareCSSTexts
             // 
-            this.compareCSSTexts.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.compareCSSTexts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.compareCSSTexts.Enabled = false;
-            this.compareCSSTexts.Location = new System.Drawing.Point(127, 331);
+            this.compareCSSTexts.Location = new System.Drawing.Point(29, 331);
             this.compareCSSTexts.Name = "compareCSSTexts";
             this.compareCSSTexts.Size = new System.Drawing.Size(103, 23);
             this.compareCSSTexts.TabIndex = 5;
@@ -93,11 +94,24 @@
             this.compareCSSTexts.UseVisualStyleBackColor = true;
             this.compareCSSTexts.Click += new System.EventHandler(this.compareCSSTexts_Click);
             // 
+            // diffCSSFiles
+            // 
+            this.diffCSSFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.diffCSSFiles.Enabled = false;
+            this.diffCSSFiles.Location = new System.Drawing.Point(215, 331);
+            this.diffCSSFiles.Name = "diffCSSFiles";
+            this.diffCSSFiles.Size = new System.Drawing.Size(103, 23);
+            this.diffCSSFiles.TabIndex = 6;
+            this.diffCSSFiles.Text = "Diff";
+            this.diffCSSFiles.UseVisualStyleBackColor = true;
+            this.diffCSSFiles.Click += new System.EventHandler(this.diffCSSFiles_Click);
+            // 
             // CompareTextsScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(368, 366);
+            this.Controls.Add(this.diffCSSFiles);
             this.Controls.Add(this.compareCSSTexts);
             this.Controls.Add(this.CompareCSSTextLabel_2);
             this.Controls.Add(this.CompareCSSTextLabel_1);
@@ -118,5 +132,6 @@
         private System.Windows.Forms.Label CompareCSSTextLabel_1;
         private System.Windows.Forms.Label CompareCSSTextLabel_2;
         private System.Windows.Forms.Button compareCSSTexts;
+        private System.Windows.Forms.Button diffCSSFiles;
     }
 }
