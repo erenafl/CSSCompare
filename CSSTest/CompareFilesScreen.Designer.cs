@@ -34,6 +34,13 @@
             this.ChooseCSSFilestextBox2 = new System.Windows.Forms.TextBox();
             this.compareCSSFiles = new System.Windows.Forms.Button();
             this.diffCSSFiles = new System.Windows.Forms.Button();
+            this.RulesetAnalyzing_label = new System.Windows.Forms.Label();
+            this.CSSAnalyzing_label = new System.Windows.Forms.Label();
+            this.ChooseAlgorithm_label = new System.Windows.Forms.Label();
+            this.RulesetAlgorithm_checkBox1 = new System.Windows.Forms.CheckBox();
+            this.RulesetAlgorithm_checkBox2 = new System.Windows.Forms.CheckBox();
+            this.StylesheetAlgorithm_checkBox2 = new System.Windows.Forms.CheckBox();
+            this.StylesheetAlgorithm_checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // chooseCSSFiles_1
@@ -75,7 +82,7 @@
             // compareCSSFiles
             // 
             this.compareCSSFiles.Enabled = false;
-            this.compareCSSFiles.Location = new System.Drawing.Point(116, 120);
+            this.compareCSSFiles.Location = new System.Drawing.Point(116, 272);
             this.compareCSSFiles.Name = "compareCSSFiles";
             this.compareCSSFiles.Size = new System.Drawing.Size(103, 23);
             this.compareCSSFiles.TabIndex = 4;
@@ -86,7 +93,7 @@
             // diffCSSFiles
             // 
             this.diffCSSFiles.Enabled = false;
-            this.diffCSSFiles.Location = new System.Drawing.Point(116, 161);
+            this.diffCSSFiles.Location = new System.Drawing.Point(116, 112);
             this.diffCSSFiles.Name = "diffCSSFiles";
             this.diffCSSFiles.Size = new System.Drawing.Size(103, 23);
             this.diffCSSFiles.TabIndex = 5;
@@ -94,11 +101,89 @@
             this.diffCSSFiles.UseVisualStyleBackColor = true;
             this.diffCSSFiles.Click += new System.EventHandler(this.diffCSSFiles_Click);
             // 
+            // RulesetAnalyzing_label
+            // 
+            this.RulesetAnalyzing_label.AutoSize = true;
+            this.RulesetAnalyzing_label.Location = new System.Drawing.Point(28, 185);
+            this.RulesetAnalyzing_label.Name = "RulesetAnalyzing_label";
+            this.RulesetAnalyzing_label.Size = new System.Drawing.Size(64, 13);
+            this.RulesetAnalyzing_label.TabIndex = 6;
+            this.RulesetAnalyzing_label.Text = "RULESETS";
+            // 
+            // CSSAnalyzing_label
+            // 
+            this.CSSAnalyzing_label.AutoSize = true;
+            this.CSSAnalyzing_label.Location = new System.Drawing.Point(217, 185);
+            this.CSSAnalyzing_label.Name = "CSSAnalyzing_label";
+            this.CSSAnalyzing_label.Size = new System.Drawing.Size(77, 13);
+            this.CSSAnalyzing_label.TabIndex = 7;
+            this.CSSAnalyzing_label.Text = "STYLESHEET";
+            // 
+            // ChooseAlgorithm_label
+            // 
+            this.ChooseAlgorithm_label.AutoSize = true;
+            this.ChooseAlgorithm_label.Location = new System.Drawing.Point(80, 153);
+            this.ChooseAlgorithm_label.Name = "ChooseAlgorithm_label";
+            this.ChooseAlgorithm_label.Size = new System.Drawing.Size(165, 13);
+            this.ChooseAlgorithm_label.TabIndex = 8;
+            this.ChooseAlgorithm_label.Text = "Choose Algorithm For Comparison";
+            // 
+            // RulesetAlgorithm_checkBox1
+            // 
+            this.RulesetAlgorithm_checkBox1.AutoSize = true;
+            this.RulesetAlgorithm_checkBox1.Location = new System.Drawing.Point(12, 213);
+            this.RulesetAlgorithm_checkBox1.Name = "RulesetAlgorithm_checkBox1";
+            this.RulesetAlgorithm_checkBox1.Size = new System.Drawing.Size(127, 17);
+            this.RulesetAlgorithm_checkBox1.TabIndex = 9;
+            this.RulesetAlgorithm_checkBox1.Text = "#Common / #Distinct";
+            this.RulesetAlgorithm_checkBox1.UseVisualStyleBackColor = true;
+            this.RulesetAlgorithm_checkBox1.CheckedChanged += new System.EventHandler(this.RulesetAlgorithm_checkBox1_CheckedChanged);
+            // 
+            // RulesetAlgorithm_checkBox2
+            // 
+            this.RulesetAlgorithm_checkBox2.AutoSize = true;
+            this.RulesetAlgorithm_checkBox2.Location = new System.Drawing.Point(12, 247);
+            this.RulesetAlgorithm_checkBox2.Name = "RulesetAlgorithm_checkBox2";
+            this.RulesetAlgorithm_checkBox2.Size = new System.Drawing.Size(103, 17);
+            this.RulesetAlgorithm_checkBox2.TabIndex = 10;
+            this.RulesetAlgorithm_checkBox2.Text = "#Common / #All";
+            this.RulesetAlgorithm_checkBox2.UseVisualStyleBackColor = true;
+            this.RulesetAlgorithm_checkBox2.CheckedChanged += new System.EventHandler(this.RulesetAlgorithm_checkBox2_CheckedChanged);
+            // 
+            // StylesheetAlgorithm_checkBox2
+            // 
+            this.StylesheetAlgorithm_checkBox2.AutoSize = true;
+            this.StylesheetAlgorithm_checkBox2.Location = new System.Drawing.Point(191, 247);
+            this.StylesheetAlgorithm_checkBox2.Name = "StylesheetAlgorithm_checkBox2";
+            this.StylesheetAlgorithm_checkBox2.Size = new System.Drawing.Size(103, 17);
+            this.StylesheetAlgorithm_checkBox2.TabIndex = 12;
+            this.StylesheetAlgorithm_checkBox2.Text = "#Common / #All";
+            this.StylesheetAlgorithm_checkBox2.UseVisualStyleBackColor = true;
+            this.StylesheetAlgorithm_checkBox2.CheckedChanged += new System.EventHandler(this.StylesheetAlgorithm_checkBox2_CheckedChanged);
+            // 
+            // StylesheetAlgorithm_checkBox1
+            // 
+            this.StylesheetAlgorithm_checkBox1.AutoSize = true;
+            this.StylesheetAlgorithm_checkBox1.Location = new System.Drawing.Point(191, 213);
+            this.StylesheetAlgorithm_checkBox1.Name = "StylesheetAlgorithm_checkBox1";
+            this.StylesheetAlgorithm_checkBox1.Size = new System.Drawing.Size(127, 17);
+            this.StylesheetAlgorithm_checkBox1.TabIndex = 11;
+            this.StylesheetAlgorithm_checkBox1.Text = "#Common / #Distinct";
+            this.StylesheetAlgorithm_checkBox1.UseVisualStyleBackColor = true;
+            this.StylesheetAlgorithm_checkBox1.CheckedChanged += new System.EventHandler(this.StylesheetAlgorithm_checkBox1_CheckedChanged);
+            // 
             // CompareFilesScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(319, 318);
+            this.Controls.Add(this.StylesheetAlgorithm_checkBox2);
+            this.Controls.Add(this.StylesheetAlgorithm_checkBox1);
+            this.Controls.Add(this.RulesetAlgorithm_checkBox2);
+            this.Controls.Add(this.RulesetAlgorithm_checkBox1);
+            this.Controls.Add(this.ChooseAlgorithm_label);
+            this.Controls.Add(this.CSSAnalyzing_label);
+            this.Controls.Add(this.RulesetAnalyzing_label);
             this.Controls.Add(this.diffCSSFiles);
             this.Controls.Add(this.compareCSSFiles);
             this.Controls.Add(this.ChooseCSSFilestextBox2);
@@ -120,5 +205,12 @@
         private System.Windows.Forms.TextBox ChooseCSSFilestextBox2;
         private System.Windows.Forms.Button compareCSSFiles;
         private System.Windows.Forms.Button diffCSSFiles;
+        private System.Windows.Forms.Label RulesetAnalyzing_label;
+        private System.Windows.Forms.Label CSSAnalyzing_label;
+        private System.Windows.Forms.Label ChooseAlgorithm_label;
+        private System.Windows.Forms.CheckBox RulesetAlgorithm_checkBox1;
+        private System.Windows.Forms.CheckBox RulesetAlgorithm_checkBox2;
+        private System.Windows.Forms.CheckBox StylesheetAlgorithm_checkBox2;
+        private System.Windows.Forms.CheckBox StylesheetAlgorithm_checkBox1;
     }
 }

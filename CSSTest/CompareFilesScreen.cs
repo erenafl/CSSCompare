@@ -21,6 +21,8 @@ namespace CSSTest
         private string filename1;
         private string filename2;
         private Parser parser;
+        private int RulesetAnalyzingChoice;
+        private int StylesheetAnalyzingChoice;
         public CompareFilesScreen()
         {
             InitializeComponent();
@@ -64,14 +66,25 @@ namespace CSSTest
 
         private void compareCSSFiles_Click(object sender, EventArgs e) 
         {
-            var raw_text1 = parser.getTextfromFile(filename1);
-            css1 = parser.ParseText(raw_text1);
+            if (RulesetAlgorithm_checkBox1.Checked || RulesetAlgorithm_checkBox2.Checked)
+            {
+                if (StylesheetAlgorithm_checkBox1.Checked || StylesheetAlgorithm_checkBox2.Checked)
+                {
+                    var raw_text1 = parser.getTextfromFile(filename1);
+                    css1 = parser.ParseText(raw_text1);
 
-            var raw_text2 = parser.getTextfromFile(filename2);
-            css2 = parser.ParseText(raw_text2);
+                    var raw_text2 = parser.getTextfromFile(filename2);
+                    css2 = parser.ParseText(raw_text2);
 
-            rs = new ResultScreen(css1, css2);
-            rs.Show();
+                    if (RulesetAlgorithm_checkBox1.Checked) RulesetAnalyzingChoice = 1;
+                    else RulesetAnalyzingChoice = 2;
+                    if (StylesheetAlgorithm_checkBox1.Checked) StylesheetAnalyzingChoice = 1;
+                    else StylesheetAnalyzingChoice = 2;
+
+                    rs = new ResultScreen(css1, css2, RulesetAnalyzingChoice, StylesheetAnalyzingChoice);
+                    rs.Show();
+                }
+            }
         }
 
         private void diffCSSFiles_Click(object sender, EventArgs e)
@@ -79,5 +92,26 @@ namespace CSSTest
             drs = new DiffResultScreen(parser.getTextfromFile(filename1), parser.getTextfromFile(filename2));
             drs.Show();
         }
+
+        private void RulesetAlgorithm_checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            RulesetAlgorithm_checkBox2.Checked = !RulesetAlgorithm_checkBox1.Checked;
+        }
+
+        private void RulesetAlgorithm_checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            RulesetAlgorithm_checkBox1.Checked = !RulesetAlgorithm_checkBox2.Checked;
+        }
+
+        private void StylesheetAlgorithm_checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            StylesheetAlgorithm_checkBox2.Checked = !StylesheetAlgorithm_checkBox1.Checked;
+        }
+
+        private void StylesheetAlgorithm_checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            StylesheetAlgorithm_checkBox1.Checked = !StylesheetAlgorithm_checkBox2.Checked;
+        }
+
     }
 }

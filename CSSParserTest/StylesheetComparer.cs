@@ -13,11 +13,15 @@ namespace CSSParser
         private CSSDocument Stylesheet2 { set; get; }
         public double RulesetSimilarity { get; private set; }
         public double AtRuleSimilarity { get; private set; }
-        public StylesheetComparer(CSSDocument css1, CSSDocument css2)
+        private int RulesetAnalyzingChoice;
+        private int StylesheetAnalyzingChoice;
+        public StylesheetComparer(CSSDocument css1, CSSDocument css2, int choice1, int choice2)
         {
             Stylesheet1 = css1;
             Stylesheet2 = css2;
-            StyleSheetAnalyzer = new StylesheetAnalyzer();
+            RulesetAnalyzingChoice = choice1;
+            StylesheetAnalyzingChoice = choice2;
+            StyleSheetAnalyzer = new StylesheetAnalyzer(RulesetAnalyzingChoice);
         }
         public void Analyze()
         {
@@ -33,8 +37,20 @@ namespace CSSParser
         private void CalculateRulesetSimilarity()
         {
             var NumberOfDistinctRulesets = Stylesheet1.rulesets.Count() + Stylesheet2.rulesets.Count() - StyleSheetAnalyzer.NumberOfCommonRulesets;
+            var NumberOfAllElements = Stylesheet1.rulesets.Count() + Stylesheet2.rulesets.Count();
             if (NumberOfDistinctRulesets == 0) RulesetSimilarity = Convert.ToDouble(0);
-            else RulesetSimilarity = StyleSheetAnalyzer.TotalRulesetSimilarity / (Convert.ToDouble(NumberOfDistinctRulesets));
+            else
+            {
+                if (StylesheetAnalyzingChoice == 1)
+                {
+                    RulesetSimilarity = StyleSheetAnalyzer.TotalRulesetSimilarity / (Convert.ToDouble(NumberOfDistinctRulesets));
+                }
+                if (StylesheetAnalyzingChoice == 2)
+                {
+                    RulesetSimilarity = StyleSheetAnalyzer.TotalRulesetSimilarity / (Convert.ToDouble(NumberOfAllElements));
+                }
+            }
+               
         }
         private void CalculateAtRuleSimilarity()
         {

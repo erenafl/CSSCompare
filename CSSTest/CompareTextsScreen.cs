@@ -32,7 +32,7 @@ namespace CSSTest
         {
             css1 = parser.ParseText(CompareCSSTextstextBox1.Text);
             css2 = parser.ParseText(CompareCSSTextstextBox2.Text);
-            rs = new ResultScreen(css1, css2);
+            rs = new ResultScreen(css1, css2, 1, 1);
             rs.Show();
         }
 

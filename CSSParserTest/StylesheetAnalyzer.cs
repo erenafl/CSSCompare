@@ -14,13 +14,15 @@ namespace CSSParser
         public int NumberOfCommonAtRules { private set; get; }
         public double TotalRulesetSimilarity { private set; get; }
         public double TotalAtRuleSimilarity { private set; get; }
-        public StylesheetAnalyzer()
+        private int RulesetAnalyzingChoice;
+        public StylesheetAnalyzer(int choice)
         {
             NumberOfCommonRulesets = 0;
             NumberOfCommonAtRules = 0;
             TotalRulesetSimilarity = Convert.ToDouble(0);
             TotalAtRuleSimilarity = Convert.ToDouble(0);
-            RulesetComparer = new RulesetAnalyzer();
+            RulesetAnalyzingChoice = choice;
+            RulesetComparer = new RulesetAnalyzer(RulesetAnalyzingChoice);
         }
 
 

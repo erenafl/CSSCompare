@@ -14,16 +14,20 @@ namespace CSSTest
 
     public partial class ResultScreen : Form
     {
+        private int RulesetAnalyzingChoice;
+        private int StylesheetAnalyzingChoice;
         private StylesheetComparer _comparer;
-        public ResultScreen(CSSDocument css1, CSSDocument css2)
+        public ResultScreen(CSSDocument css1, CSSDocument css2, int choice1, int choice2)
         {
             InitializeComponent();
             FillTree(parsedCSStreeView1, css1);
             FillTree(parsedCSStreeView2, css2);
+            RulesetAnalyzingChoice = choice1;
+            StylesheetAnalyzingChoice = choice2;
 
             #region @StyleSheet Analysis Test Section
 
-            _comparer = new StylesheetComparer(css1, css2);
+            _comparer = new StylesheetComparer(css1, css2, RulesetAnalyzingChoice, StylesheetAnalyzingChoice);
             _comparer.Analyze();
             rulesetSimilarity_textBox.Text = Math.Round(_comparer.RulesetSimilarity * 100, 3, MidpointRounding.AwayFromZero).ToString() + "%";
 

@@ -13,9 +13,10 @@ namespace CSSParser
         public bool IsCommon { private set; get; }
         private int NumberOfCommonProperties {  set;  get; }
         private int NumberOfDistinctProperties {  set;  get; }
-        public RulesetAnalyzer()
+        private int RulesetAnalyzingChoice;
+        public RulesetAnalyzer(int choice)
         {
-            
+            RulesetAnalyzingChoice = choice;
         }
         public double AnalyzeRulesets(Ruleset first, Ruleset second)
         {
@@ -47,6 +48,18 @@ namespace CSSParser
             if(IsCommon) 
             {
                 if (NumberOfDistinctProperties == 0 && NumberOfCommonProperties == 0) return Convert.ToDouble(1);
+                else
+                {
+                    if (RulesetAnalyzingChoice == 1)
+                    {
+                        return Convert.ToDouble(NumberOfCommonProperties) / Convert.ToDouble(NumberOfDistinctProperties);
+                    }
+                    if (RulesetAnalyzingChoice == 2)
+                    {
+                        return Convert.ToDouble(NumberOfCommonProperties) / Convert.ToDouble(FirstRuleset.declerations.Count + SecondRuleset.declerations.Count);
+                    }
+                }
+
                 return Convert.ToDouble(NumberOfCommonProperties) / Convert.ToDouble(NumberOfDistinctProperties);
             }
             return Convert.ToDouble(0);
