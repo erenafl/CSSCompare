@@ -19,6 +19,8 @@ namespace CSSTest
         private CSSDocument css1;
         private CSSDocument css2;
         private Parser parser;
+        private int RulesetAnalyzingChoice;
+        private int StylesheetAnalyzingChoice;
         public CompareTextsScreen()
         {
             InitializeComponent();
@@ -30,10 +32,25 @@ namespace CSSTest
 
         private void compareCSSTexts_Click(object sender, EventArgs e)
         {
-            css1 = parser.ParseText(CompareCSSTextstextBox1.Text);
-            css2 = parser.ParseText(CompareCSSTextstextBox2.Text);
-            rs = new ResultScreen(css1, css2, 1, 1);
-            rs.Show();
+
+            if (RulesetAlgorithm_checkBox1.Checked || RulesetAlgorithm_checkBox2.Checked)
+            {
+                if (StylesheetAlgorithm_checkBox1.Checked || StylesheetAlgorithm_checkBox2.Checked)
+                {
+                    if (RulesetAlgorithm_checkBox1.Checked) RulesetAnalyzingChoice = 1;
+                    else RulesetAnalyzingChoice = 2;
+                    if (StylesheetAlgorithm_checkBox1.Checked) StylesheetAnalyzingChoice = 1;
+                    else StylesheetAnalyzingChoice = 2;
+
+                    css1 = parser.ParseText(CompareCSSTextstextBox1.Text);
+                    css2 = parser.ParseText(CompareCSSTextstextBox2.Text);
+                    rs = new ResultScreen(css1, css2, RulesetAnalyzingChoice, StylesheetAnalyzingChoice);
+                    rs.Show();
+                }
+            }
+            
+            
+            
         }
 
         private void CompareCSSTextstextBox1_TextChanged(object sender, EventArgs e)
@@ -74,14 +91,35 @@ namespace CSSTest
             CompareCSSTextLabel_1.Left= this.Width / 4 - 6;
             CompareCSSTextLabel_2.Left = this.Width / 2 + this.Width / 4 - 6;
 
-            compareCSSTexts.Left = this.Width / 4 - 6;
-            diffCSSFiles.Left = this.Width / 2 + this.Width / 4 - 6;
+            compareCSSTexts.Left = CompareCSSTextstextBox2.Left - compareCSSTexts.Width / 2;
+            diffCSSFiles.Left = CompareCSSTextstextBox2.Left - diffCSSFiles.Width / 2;
+            ComparisonAlgorithmPanel.Left = CompareCSSTextstextBox2.Left - ComparisonAlgorithmPanel.Width / 2;
         }
 
         private void diffCSSFiles_Click(object sender, EventArgs e)
         {
             drs = new DiffResultScreen(CompareCSSTextstextBox1.Text, CompareCSSTextstextBox2.Text);
             drs.Show();
+        }
+
+        private void RulesetAlgorithm_checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            RulesetAlgorithm_checkBox2.Checked = !RulesetAlgorithm_checkBox1.Checked;
+        }
+
+        private void RulesetAlgorithm_checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            RulesetAlgorithm_checkBox1.Checked = !RulesetAlgorithm_checkBox2.Checked;
+        }
+
+        private void StylesheetAlgorithm_checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            StylesheetAlgorithm_checkBox2.Checked = !StylesheetAlgorithm_checkBox1.Checked;
+        }
+
+        private void StylesheetAlgorithm_checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            StylesheetAlgorithm_checkBox1.Checked = !StylesheetAlgorithm_checkBox2.Checked;
         }
     }
 }

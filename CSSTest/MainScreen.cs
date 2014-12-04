@@ -61,7 +61,11 @@ namespace CSSTest
                 css = parser.ParseText(ti.RawText);
                 parsedCSSTreeView.Nodes.Clear();
                 FillTree(parsedCSSTreeView);
-                if(parsedCSSTreeView.Nodes.Count != 0)saveAsToolStripMenuItem.Enabled = true;
+                if (parsedCSSTreeView.Nodes.Count != 0)
+                {
+                    saveAsToolStripMenuItem.Enabled = true;
+                    Search_panel.Enabled = true;
+                }
             }
             
         }
