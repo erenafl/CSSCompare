@@ -408,25 +408,26 @@ namespace CSSParser
             var font_faceRule = new AtFont_FaceRule();
             var font_faceRule_TrimmedText = font_faceRule_Text.Substring(0, font_faceRule_Text.Length - 1);
             List<string> declerations = font_faceRule_TrimmedText.Split('{')[1].Split(';').ToList();
-            foreach (string decleration_raw in declerations)
+            for (i = 0; i < declerations.Count; i++)
             {
-                var decleration = decleration_raw.Trim();
+                var decleration = declerations[i].Trim();
                 if (decleration != "")
                 {
-                    if (decleration.Contains("url") && decleration.Contains("(") && !decleration.Contains(")"))
+                    if (decleration.Contains("url"))
                     {
-                        decleration += ";" + declerations[i + 1];
-                        declerations.Remove(declerations[i + 1]);
-                        decleration = decleration.Trim();
+                        if (decleration.Count(c => c == '(') != decleration.Count(c => c == ')'))
+                        {
+                            decleration += ";" + declerations[i + 1];
+                            i++;
+                            decleration = decleration.Trim();
+                        }
                     }
-
                     string[] PropertyAndValue = decleration.Split(":".ToCharArray(), 2);
                     var property = new Property(PropertyAndValue[0].Trim());
                     var value = new Value(PropertyAndValue[1].Trim());
                     var dec = new Decleration(property, value);
                     font_faceRule.Declerations.Add(dec);
                 }
-
             }
             atrules.Add(font_faceRule);
 
